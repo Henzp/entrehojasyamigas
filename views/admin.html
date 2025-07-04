@@ -744,6 +744,11 @@
             color: #721c24;
         }
 
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
         .table-actions {
             display: flex;
             gap: 0.5rem;
@@ -975,6 +980,12 @@
                 <button class="menu-item" onclick="showPage('banner')">
                     <i class="fas fa-images"></i> Banner Principal
                 </button>
+                <button class="menu-item" onclick="showPage('tips')">
+                    <i class="fas fa-lightbulb"></i> Gestionar Tips
+                </button>
+                <button class="menu-item" onclick="showPage('nuevo-tip')">
+                    <i class="fas fa-plus-circle"></i> Nuevo Tip
+                </button>
             </div>
             
             <div class="menu-section">
@@ -1042,11 +1053,11 @@
                     <div class="stat-card warning">
                         <div class="stat-header">
                             <div>
-                                <div class="stat-value" id="productosInactivos">0</div>
-                                <div class="stat-label">Productos Inactivos</div>
+                                <div class="stat-value" id="totalTips">0</div>
+                                <div class="stat-label">Tips Publicados</div>
                             </div>
                             <div class="stat-icon">
-                                <i class="fas fa-eye-slash"></i>
+                                <i class="fas fa-lightbulb"></i>
                             </div>
                         </div>
                     </div>
@@ -1072,14 +1083,14 @@
                     </div>
                     <div class="card-body">
                         <p>Bienvenido al panel de administración de <strong>Entre Hojas y Amigas</strong>.</p>
-                        <p>Desde aquí puedes gestionar todos los productos de tu tienda de plantas y el banner principal.</p>
+                        <p>Desde aquí puedes gestionar todos los productos de tu tienda, tips de cuidado y el banner principal.</p>
                         
                         <div style="margin-top: 2rem;">
                             <button class="btn btn-primary" onclick="showPage('nuevo-producto')">
                                 <i class="fas fa-plus"></i> Agregar Nuevo Producto
                             </button>
-                            <button class="btn btn-secondary" onclick="showPage('productos')" style="margin-left: 1rem;">
-                                <i class="fas fa-list"></i> Ver Todos los Productos
+                            <button class="btn btn-secondary" onclick="showPage('nuevo-tip')" style="margin-left: 1rem;">
+                                <i class="fas fa-lightbulb"></i> Crear Nuevo Tip
                             </button>
                             <button class="btn btn-secondary" onclick="showPage('banner')" style="margin-left: 1rem;">
                                 <i class="fas fa-images"></i> Gestionar Banner
@@ -1391,6 +1402,215 @@
                     </div>
                 </div>
             </section>
+
+            <!-- ✅ NUEVA SECCIÓN: Tips -->
+            <section id="tips" class="page-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-lightbulb"></i> Lista de Tips
+                        </h3>
+                        <button class="btn btn-primary" onclick="showPage('nuevo-tip')">
+                            <i class="fas fa-plus"></i> Nuevo Tip
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="tipsContainer">
+                            <div class="loading">
+                                <i class="fas fa-spinner"></i>
+                                <p>Cargando tips...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ✅ NUEVA SECCIÓN: Nuevo Tip -->
+            <section id="nuevo-tip" class="page-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-plus-circle"></i> <span id="tipFormTitle">Agregar Nuevo Tip</span>
+                        </h3>
+                        <button class="btn btn-secondary" onclick="showPage('tips')">
+                            <i class="fas fa-arrow-left"></i> Volver a Lista
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="tipAlertContainer"></div>
+                        
+                        <form id="tipForm">
+                            <input type="hidden" id="tipId">
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="tipTitulo">Título del Tip *</label>
+                                    <input type="text" id="tipTitulo" class="form-control" required placeholder="Ej: Cómo regar tus plantas correctamente">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="tipCategoria">Categoría *</label>
+                                    <select id="tipCategoria" class="form-control" required>
+                                        <option value="">Seleccionar categoría</option>
+                                        <option value="Cuidado Básico">Cuidado Básico</option>
+                                        <option value="Riego">Riego</option>
+                                        <option value="Plagas">Plagas y Enfermedades</option>
+                                        <option value="Fertilización">Fertilización</option>
+                                        <option value="Trasplante">Trasplante</option>
+                                        <option value="Propagación">Propagación</option>
+                                        <option value="Luz">Luz y Ubicación</option>
+                                        <option value="Temperatura">Temperatura y Humedad</option>
+                                        <option value="Herramientas">Herramientas</option>
+                                        <option value="Decoración">Decoración</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="tipDificultad">Nivel de Dificultad *</label>
+                                    <select id="tipDificultad" class="form-control" required>
+                                        <option value="">Seleccionar dificultad</option>
+                                        <option value="Fácil">🟢 Fácil (Principiantes)</option>
+                                        <option value="Intermedio">🟡 Intermedio</option>
+                                        <option value="Avanzado">🔴 Avanzado</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="tipAutor">Autor</label>
+                                    <input type="text" id="tipAutor" class="form-control" placeholder="Ej: Experto en Plantas" value="Experto en Plantas">
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="tipDescripcionCorta">Descripción Corta *</label>
+                                    <textarea id="tipDescripcionCorta" class="form-control" rows="3" required 
+                                              placeholder="Resumen breve del tip que aparecerá en la tarjeta (máx. 200 caracteres)"></textarea>
+                                    <small style="color: #666;">Máximo 200 caracteres - aparece en la tarjeta del tip</small>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="tipDescripcionCompleta">Descripción Completa *</label>
+                                    <textarea id="tipDescripcionCompleta" class="form-control" rows="5" required 
+                                              placeholder="Explicación detallada del tip que aparecerá en el modal"></textarea>
+                                    <small style="color: #666;">Explicación completa que se mostrará cuando el usuario haga clic en "Ver Completo"</small>
+                                </div>
+                                
+                                <!-- Sistema de imágenes -->
+                                <div class="form-group full-width">
+                                    <label class="form-label">Imagen del Tip *</label>
+                                    
+                                    <div class="image-upload-tabs">
+                                        <button type="button" class="upload-tab active" onclick="switchTipUploadTab('tip-files')">
+                                            <i class="fas fa-upload"></i> Subir Archivo
+                                        </button>
+                                        <button type="button" class="upload-tab" onclick="switchTipUploadTab('tip-urls')">
+                                            <i class="fas fa-link"></i> Agregar por URL
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Subir archivos -->
+                                    <div id="tip-files-content" class="upload-content active">
+                                        <div class="file-upload-section" 
+                                             ondrop="handleTipDrop(event)" 
+                                             ondragover="handleDragOver(event)" 
+                                             ondragenter="handleDragEnter(event)" 
+                                             ondragleave="handleDragLeave(event)">
+                                            
+                                            <div class="upload-icon">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                            <h4 style="margin-bottom: 1rem;">Subir Imagen del Tip</h4>
+                                            <p style="margin-bottom: 1.5rem; color: #666;">
+                                                Recomendado: 400x300px, JPG o PNG<br>
+                                                <small>Máximo 10MB</small>
+                                            </p>
+                                            
+                                            <div class="file-input-wrapper">
+                                                <input type="file" id="tipImageFile" class="file-input" 
+                                                       accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" 
+                                                       onchange="handleTipFileSelect(event)">
+                                                <label for="tipImageFile" class="file-input-label">
+                                                    <i class="fas fa-folder-open"></i> Seleccionar Imagen
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="upload-progress" id="tipUploadProgress">
+                                                <div class="upload-progress-bar" id="tipUploadProgressBar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Agregar por URL -->
+                                    <div id="tip-urls-content" class="upload-content">
+                                        <div class="url-upload-section">
+                                            <div class="upload-icon">
+                                                <i class="fas fa-link"></i>
+                                            </div>
+                                            <h4 style="margin-bottom: 1rem;">URL de Imagen Externa</h4>
+                                            <p style="margin-bottom: 1.5rem; color: #666;">
+                                                Agrega una imagen usando una URL externa
+                                            </p>
+                                            
+                                            <div class="url-input-group">
+                                                <input type="url" id="tipImageUrl" class="form-control" 
+                                                       placeholder="https://ejemplo.com/imagen.jpg">
+                                                <button type="button" class="btn btn-secondary" onclick="usarUrlTip()">
+                                                    <i class="fas fa-check"></i> Usar URL
+                                                </button>
+                                            </div>
+                                            
+                                            <div class="example-urls">
+                                                <span class="example-url" onclick="useTipExampleUrl('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400')">
+                                                    Planta en Maceta
+                                                </span>
+                                                <span class="example-url" onclick="useTipExampleUrl('https://images.unsplash.com/photo-1463154545680-d59320fd685d?w=400')">
+                                                    Cuidado de Plantas
+                                                </span>
+                                                <span class="example-url" onclick="useTipExampleUrl('https://images.unsplash.com/photo-1509423350716-97f2360af8e4?w=400')">
+                                                    Riego de Plantas
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Preview de imagen -->
+                                    <div id="tipImagePreview" style="margin-top: 1rem;"></div>
+                                </div>
+                                
+                                <!-- Pasos del tip (opcional) -->
+                                <div class="form-group full-width">
+                                    <label class="form-label">Pasos a Seguir (Opcional)</label>
+                                    <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">
+                                        Agrega pasos detallados si tu tip requiere instrucciones secuenciales
+                                    </p>
+                                    
+                                    <div id="pasosContainer">
+                                        <div class="paso-item" style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;">
+                                            <span style="background: #2d5016; color: white; padding: 0.5rem; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: 600;">1</span>
+                                            <input type="text" class="form-control paso-input" placeholder="Describe el primer paso..." style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary btn-small" onclick="eliminarPaso(this)" style="display: none;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-secondary" onclick="agregarPaso()" style="margin-top: 1rem;">
+                                        <i class="fas fa-plus"></i> Agregar Paso
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                                <button type="submit" class="btn btn-primary" id="tipSubmitBtn">
+                                    <i class="fas fa-save"></i> <span id="tipBtnText">Guardar Tip</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="limpiarFormularioTip()">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -1415,14 +1635,18 @@
         let productoEditando = null;
         let bannerItems = [];
         let bannerImagenSeleccionada = '';
+        let tipsData = [];
+        let tipImagenSeleccionada = '';
+        let tipEditando = null;
 
         // Inicializar al cargar
         document.addEventListener('DOMContentLoaded', function() {
             cargarProductos();
             cargarBanner();
+            cargarTipsAdmin();
         });
 
-        // ✅ Navegación corregida (incluyendo banner)
+        // ✅ Navegación corregida (incluyendo tips)
         function showPage(pageId, fromEdit = false) {
             document.querySelectorAll('.page-section').forEach(section => {
                 section.classList.remove('active');
@@ -1447,7 +1671,9 @@
                 'dashboard': 'Dashboard',
                 'productos': 'Gestionar Productos',
                 'nuevo-producto': fromEdit ? 'Editar Producto' : 'Nuevo Producto',
-                'banner': 'Banner Principal'
+                'banner': 'Banner Principal',
+                'tips': 'Gestionar Tips',
+                'nuevo-tip': fromEdit ? 'Editar Tip' : 'Nuevo Tip'
             };
             
             const pageTitle = document.getElementById('pageTitle');
@@ -1459,8 +1685,16 @@
                 limpiarFormulario();
             }
             
+            if (pageId === 'nuevo-tip' && !fromEdit) {
+                limpiarFormularioTip();
+            }
+            
             if (pageId === 'banner') {
                 cargarBanner();
+            }
+
+            if (pageId === 'tips') {
+                cargarTipsAdmin();
             }
         }
 
@@ -1468,7 +1702,531 @@
             document.getElementById('sidebar').classList.toggle('open');
         }
 
-        // ✅ FUNCIONES PARA BANNER
+        // ===============================================
+        // FUNCIONES PARA TIPS
+        // ===============================================
+
+        // Cargar tips al inicializar dashboard
+        function cargarTipsAdmin() {
+            fetch('/api/tips')
+                .then(response => response.json())
+                .then(tips => {
+                    tipsData = tips;
+                    mostrarTipsAdmin();
+                    actualizarEstadisticasTips();
+                })
+                .catch(error => {
+                    console.error('Error cargando tips:', error);
+                });
+        }
+
+        function mostrarTipsAdmin() {
+            const container = document.getElementById('tipsContainer');
+            
+            if (tipsData.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>No hay tips registrados</h3>
+                        <p>Comienza agregando tu primer tip de cuidado</p>
+                        <button class="btn btn-primary" onclick="showPage('nuevo-tip')">
+                            <i class="fas fa-plus"></i> Agregar Primer Tip
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Título</th>
+                                <th>Categoría</th>
+                                <th>Dificultad</th>
+                                <th>Autor</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tipsData.map(tip => `
+                                <tr>
+                                    <td>
+                                        <img src="${tip.imagen || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=100'}" 
+                                             alt="${tip.titulo}">
+                                    </td>
+                                    <td><strong>${tip.titulo}</strong></td>
+                                    <td>${tip.categoria}</td>
+                                    <td>
+                                        <span class="status-badge ${getDificultadClass(tip.dificultad)}">
+                                            ${tip.dificultad}
+                                        </span>
+                                    </td>
+                                    <td>${tip.autor || 'N/A'}</td>
+                                    <td>
+                                        <span class="status-badge ${tip.activo ? 'status-active' : 'status-inactive'}">
+                                            ${tip.activo ? 'Activo' : 'Inactivo'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="action-btn edit" onclick="editarTip('${tip._id}')">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </button>
+                                            <button class="action-btn delete" onclick="confirmarEliminarTip('${tip._id}', '${tip.titulo}')">
+                                                <i class="fas fa-trash"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function getDificultadClass(dificultad) {
+            switch(dificultad?.toLowerCase()) {
+                case 'fácil': case 'facil': return 'status-active';
+                case 'intermedio': return 'status-warning';
+                case 'avanzado': return 'status-inactive';
+                default: return 'status-active';
+            }
+        }
+
+        function actualizarEstadisticasTips() {
+            const totalTipsElement = document.getElementById('totalTips');
+            if (totalTipsElement) {
+                totalTipsElement.textContent = tipsData.length;
+            }
+        }
+
+        // Funciones para manejo de pestañas de upload (tips)
+        function switchTipUploadTab(tabType) {
+            document.querySelectorAll('#nuevo-tip .upload-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('#nuevo-tip .upload-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            const targetContent = document.getElementById(tabType + '-content');
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+
+        // Manejo de archivos para tips
+        function handleTipDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const uploadSection = e.target.closest('.file-upload-section');
+            if (uploadSection) {
+                uploadSection.classList.remove('dragover');
+            }
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                uploadTipFile(files[0]);
+            }
+        }
+
+        function handleTipFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                uploadTipFile(file);
+            }
+        }
+
+        async function uploadTipFile(file) {
+            const progressBar = document.getElementById('tipUploadProgress');
+            const progressBarFill = document.getElementById('tipUploadProgressBar');
+            
+            if (progressBar) progressBar.style.display = 'block';
+            if (progressBarFill) progressBarFill.style.width = '0%';
+            
+            try {
+                const formData = new FormData();
+                formData.append('images', file);
+                
+                const response = await fetch('/api/upload-images', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (progressBarFill) progressBarFill.style.width = '50%';
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && result.images.length > 0) {
+                    tipImagenSeleccionada = result.images[0].url;
+                    if (progressBarFill) progressBarFill.style.width = '100%';
+                    mostrarPreviewTipImage(tipImagenSeleccionada);
+                    mostrarAlertaTip('Imagen subida exitosamente', 'success');
+                } else {
+                    throw new Error(result.error || 'Error desconocido');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error subiendo archivo:', error);
+                mostrarAlertaTip('Error al subir archivo: ' + error.message, 'error');
+            } finally {
+                setTimeout(() => {
+                    if (progressBar) progressBar.style.display = 'none';
+                    if (progressBarFill) progressBarFill.style.width = '0%';
+                }, 2000);
+            }
+        }
+
+        function usarUrlTip() {
+            const urlInput = document.getElementById('tipImageUrl');
+            if (!urlInput) return;
+            
+            const url = urlInput.value.trim();
+            if (!url) {
+                mostrarAlertaTip('Por favor ingresa una URL válida', 'error');
+                return;
+            }
+
+            if (!isValidUrl(url)) {
+                mostrarAlertaTip('La URL no es válida', 'error');
+                return;
+            }
+
+            tipImagenSeleccionada = url;
+            mostrarPreviewTipImage(url);
+            mostrarAlertaTip('URL agregada correctamente', 'success');
+        }
+
+        function useTipExampleUrl(url) {
+            const input = document.getElementById('tipImageUrl');
+            if (input) {
+                input.value = url;
+            }
+        }
+
+        function mostrarPreviewTipImage(url) {
+            const preview = document.getElementById('tipImagePreview');
+            if (!preview) return;
+            
+            preview.innerHTML = `
+                <div style="text-align: center;">
+                    <img src="${url}" alt="Preview Tip" 
+                         style="max-width: 300px; max-height: 200px; border-radius: 8px; border: 2px solid #e9ecef;">
+                    <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">
+                        Preview de la imagen del tip
+                    </p>
+                </div>
+            `;
+        }
+
+        // Manejo de pasos
+        function agregarPaso() {
+            const container = document.getElementById('pasosContainer');
+            const pasoNumber = container.children.length + 1;
+            
+            const nuevoPaso = document.createElement('div');
+            nuevoPaso.className = 'paso-item';
+            nuevoPaso.style.cssText = 'display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;';
+            
+            nuevoPaso.innerHTML = `
+                <span style="background: #2d5016; color: white; padding: 0.5rem; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: 600;">${pasoNumber}</span>
+                <input type="text" class="form-control paso-input" placeholder="Describe el paso ${pasoNumber}..." style="flex: 1;">
+                <button type="button" class="btn btn-secondary btn-small" onclick="eliminarPaso(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            
+            container.appendChild(nuevoPaso);
+            
+            // Mostrar botones de eliminar si hay más de 1 paso
+            if (pasoNumber > 1) {
+                container.querySelectorAll('.btn-small').forEach(btn => {
+                    btn.style.display = 'inline-flex';
+                });
+            }
+        }
+
+        function eliminarPaso(btn) {
+            const container = document.getElementById('pasosContainer');
+            const pasoItem = btn.closest('.paso-item');
+            pasoItem.remove();
+            
+            // Renumerar pasos
+            container.querySelectorAll('.paso-item').forEach((item, index) => {
+                const span = item.querySelector('span');
+                const input = item.querySelector('input');
+                span.textContent = index + 1;
+                input.placeholder = `Describe el paso ${index + 1}...`;
+            });
+            
+            // Ocultar botones de eliminar si solo queda 1 paso
+            if (container.children.length === 1) {
+                container.querySelector('.btn-small').style.display = 'none';
+            }
+        }
+
+        // Formulario de tips
+        document.getElementById('tipForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!tipImagenSeleccionada) {
+                mostrarAlertaTip('Debes agregar una imagen para el tip', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('tipSubmitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            }
+
+            // Recopilar pasos
+            const pasos = [];
+            document.querySelectorAll('.paso-input').forEach(input => {
+                if (input.value.trim()) {
+                    pasos.push(input.value.trim());
+                }
+            });
+
+            const formData = {
+                titulo: document.getElementById('tipTitulo').value,
+                categoria: document.getElementById('tipCategoria').value,
+                dificultad: document.getElementById('tipDificultad').value,
+                autor: document.getElementById('tipAutor').value,
+                descripcionCorta: document.getElementById('tipDescripcionCorta').value,
+                descripcionCompleta: document.getElementById('tipDescripcionCompleta').value,
+                imagen: tipImagenSeleccionada,
+                pasos: pasos
+            };
+
+            try {
+                let response;
+                const tipId = document.getElementById('tipId').value;
+
+                if (tipId) {
+                    response = await fetch(`/api/tips/${tipId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                } else {
+                    response = await fetch('/api/tips', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                }
+
+                if (response.ok) {
+                    mostrarAlertaTip(`Tip ${tipId ? 'actualizado' : 'creado'} exitosamente`, 'success');
+                    limpiarFormularioTip();
+                    cargarTipsAdmin();
+                    showPage('tips');
+                } else {
+                    const error = await response.json();
+                    mostrarAlertaTip(error.error || 'Error al guardar tip', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarAlertaTip('Error de conexión', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-save"></i> <span id="tipBtnText">Guardar Tip</span>';
+                }
+            }
+        });
+
+        // Editar tip
+        function editarTip(id) {
+            const tip = tipsData.find(t => t._id === id);
+            if (!tip) return;
+
+            tipEditando = tip;
+            tipImagenSeleccionada = tip.imagen || '';
+
+            const fields = {
+                'tipId': tip._id,
+                'tipTitulo': tip.titulo,
+                'tipCategoria': tip.categoria,
+                'tipDificultad': tip.dificultad,
+                'tipAutor': tip.autor,
+                'tipDescripcionCorta': tip.descripcionCorta,
+                'tipDescripcionCompleta': tip.descripcionCompleta
+            };
+
+            Object.entries(fields).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.value = value || '';
+                }
+            });
+
+            // Cargar pasos si existen
+            if (tip.pasos && tip.pasos.length > 0) {
+                const container = document.getElementById('pasosContainer');
+                container.innerHTML = '';
+                
+                tip.pasos.forEach((paso, index) => {
+                    const pasoItem = document.createElement('div');
+                    pasoItem.className = 'paso-item';
+                    pasoItem.style.cssText = 'display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;';
+                    
+                    pasoItem.innerHTML = `
+                        <span style="background: #2d5016; color: white; padding: 0.5rem; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: 600;">${index + 1}</span>
+                        <input type="text" class="form-control paso-input" value="${paso}" style="flex: 1;">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="eliminarPaso(this)" ${index === 0 && tip.pasos.length === 1 ? 'style="display: none;"' : ''}>
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                    
+                    container.appendChild(pasoItem);
+                });
+            }
+
+            const formTitle = document.getElementById('tipFormTitle');
+            if (formTitle) {
+                formTitle.textContent = 'Editar Tip';
+            }
+            
+            const btnText = document.getElementById('tipBtnText');
+            if (btnText) {
+                btnText.textContent = 'Actualizar Tip';
+            }
+            
+            if (tipImagenSeleccionada) {
+                mostrarPreviewTipImage(tipImagenSeleccionada);
+            }
+            
+            showPage('nuevo-tip', true);
+        }
+
+        function confirmarEliminarTip(id, titulo) {
+            const confirmMessage = document.getElementById('confirmMessage');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const modal = document.getElementById('confirmModal');
+            
+            if (confirmMessage) {
+                confirmMessage.textContent = `¿Estás seguro de que deseas eliminar el tip "${titulo}"? Esta acción no se puede deshacer.`;
+            }
+            
+            if (confirmBtn) {
+                confirmBtn.onclick = () => eliminarTip(id);
+            }
+            
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        async function eliminarTip(id) {
+            try {
+                const response = await fetch(`/api/tips/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    mostrarAlertaTip('Tip eliminado exitosamente', 'success');
+                    cargarTipsAdmin();
+                    cerrarModal();
+                } else {
+                    const error = await response.json();
+                    mostrarAlertaTip(error.error || 'Error al eliminar tip', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarAlertaTip('Error de conexión', 'error');
+            }
+        }
+
+        function limpiarFormularioTip() {
+            const form = document.getElementById('tipForm');
+            if (form) {
+                form.reset();
+            }
+            
+            const tipId = document.getElementById('tipId');
+            if (tipId) {
+                tipId.value = '';
+            }
+            
+            tipImagenSeleccionada = '';
+            tipEditando = null;
+            
+            const formTitle = document.getElementById('tipFormTitle');
+            if (formTitle) {
+                formTitle.textContent = 'Agregar Nuevo Tip';
+            }
+            
+            const btnText = document.getElementById('tipBtnText');
+            if (btnText) {
+                btnText.textContent = 'Guardar Tip';
+            }
+            
+            const preview = document.getElementById('tipImagePreview');
+            if (preview) {
+                preview.innerHTML = '';
+            }
+            
+            const alertContainer = document.getElementById('tipAlertContainer');
+            if (alertContainer) {
+                alertContainer.innerHTML = '';
+            }
+            
+            // Resetear pasos a 1
+            const container = document.getElementById('pasosContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="paso-item" style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;">
+                        <span style="background: #2d5016; color: white; padding: 0.5rem; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: 600;">1</span>
+                        <input type="text" class="form-control paso-input" placeholder="Describe el primer paso..." style="flex: 1;">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="eliminarPaso(this)" style="display: none;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function mostrarAlertaTip(mensaje, tipo) {
+            const alertContainer = document.getElementById('tipAlertContainer');
+            if (!alertContainer) return;
+            
+            const alertClass = tipo === 'success' ? 'alert-success' : 'alert-error';
+            const icon = tipo === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            
+            alertContainer.innerHTML = `
+                <div class="alert ${alertClass}">
+                    <i class="${icon}"></i>
+                    ${mensaje}
+                </div>
+            `;
+
+            setTimeout(() => {
+                if (alertContainer) {
+                    alertContainer.innerHTML = '';
+                }
+            }, 5000);
+        }
+
+        // ===============================================
+        // FUNCIONES PARA BANNER 
+        // ===============================================
+
         async function cargarBanner() {
             try {
                 const response = await fetch('/api/banner');
@@ -1816,6 +2574,10 @@
             }, 5000);
         }
 
+        // ===============================================
+        // FUNCIONES PARA PRODUCTOS (CÓDIGO EXISTENTE)
+        // ===============================================
+
         // ✅ Cambiar entre pestañas de upload (productos)
         function switchUploadTab(tabType) {
             // Actualizar pestañas
@@ -2000,7 +2762,7 @@
                                     </td>
                                     <td><strong>${producto.nombre}</strong></td>
                                     <td>${producto.categoria}</td>
-                                    <td>$${formatearPrecio(producto.precio)}</td>
+                                    <td>${formatearPrecio(producto.precio)}</td>
                                     <td>${producto.stock}</td>
                                     <td>
                                         <span class="status-badge ${producto.activo ? 'status-active' : 'status-inactive'}">
@@ -2032,11 +2794,9 @@
 
             const totalElement = document.getElementById('totalProductos');
             const activosElement = document.getElementById('productosActivos');
-            const inactivosElement = document.getElementById('productosInactivos');
 
             if (totalElement) totalElement.textContent = total;
             if (activosElement) activosElement.textContent = activos;
-            if (inactivosElement) inactivosElement.textContent = inactivos;
         }
 
         // Manejo de imágenes por URL (productos)
