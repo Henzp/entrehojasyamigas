@@ -271,7 +271,7 @@ const Tip = mongoose.model('Tip', tipSchema);
 const servirPagina = (archivo) => (req, res) => {
     try {
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
-        res.sendFile(path.join(__dirname, 'views', archivo));
+        res.sendFile(path.join(__dirname, '../views', archivo));
     } catch (error) {
         console.error(`Error sirviendo ${archivo}:`, error);
         res.status(500).send('Error cargando página');

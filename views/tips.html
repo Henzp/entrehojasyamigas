@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tips de Cuidado - Entre Hojas y Amigas</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Great+Vibes&family=Satisfy&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA TIPS */
+        .tips-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 140px 20px 60px;
+            min-height: 100vh;
+        }
+
+        .tips-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .tips-header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: #2d5016;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(45, 80, 22, 0.1);
+        }
+
+        .tips-header p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* FILTROS */
+        .tips-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: #f8fff8;
+            border-radius: 20px;
+            border: 2px solid #e8f5e8;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: #2d5016;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #2d5016;
+            box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+        }
+
+        .filter-select:hover {
+            border-color: #4a7c59;
+        }
+
+        /* GRID DE TIPS */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tip-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #90ee90;
+        }
+
+        .tip-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .tip-difficulty {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .tip-difficulty.facil { background: rgba(39, 174, 96, 0.9); }
+        .tip-difficulty.intermedio { background: rgba(243, 156, 18, 0.9); }
+        .tip-difficulty.avanzado { background: rgba(231, 76, 60, 0.9); }
+
+        .tip-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #2d5016;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .tip-content {
+            padding: 1.5rem;
+        }
+
+        .tip-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #2d5016;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px rgba(45, 80, 22, 0.1);
+        }
+
+        .tip-description {
+            font-family: 'Inter', sans-serif;
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .tip-author {
+            font-family: 'Inter', sans-serif;
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tip-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-ver-completo {
+            flex: 1;
+            background: linear-gradient(135deg, #2d5016, #4a7c59);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-family: 'Satisfy', cursive;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-ver-completo:hover {
+            background: linear-gradient(135deg, #1a3009, #2d5016);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(45, 80, 22, 0.3);
+        }
+
+        /* ESTADOS */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #666;
+        }
+
+        .loading i {
+            font-size: 3rem;
+            color: #2d5016;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #2d5016;
+            margin-bottom: 2rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #2d5016;
+            margin-bottom: 1rem;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            z-index: 10;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .modal-body {
+            padding: 0 2rem 2rem;
+        }
+
+        .modal-tip-image {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .modal-tip-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: #2d5016;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(45, 80, 22, 0.1);
+        }
+
+        .modal-tip-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-categoria {
+            background: #e8f5e8;
+            color: #2d5016;
+        }
+
+        .meta-dificultad {
+            color: white;
+        }
+
+        .meta-autor {
+            background: #f8f9fa;
+            color: #666;
+        }
+
+        .modal-tip-description {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        .tip-steps {
+            background: #f8fff8;
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 4px solid #2d5016;
+        }
+
+        .tip-steps h4 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #2d5016;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: start;
+        }
+
+        .step-number {
+            background: #2d5016;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            padding-top: 0.25rem;
+        }
+
+        /* BOTÓN VOLVER */
+        .btn-volver {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #6c757d;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .btn-volver:hover {
+            background: #545b62;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .tips-container {
+                padding: 100px 15px 40px;
+            }
+
+            .tips-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .tips-filters {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .filter-group {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .tip-card {
+                margin: 0 auto;
+                max-width: 400px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-body {
+                padding: 0 1.5rem 1.5rem;
+            }
+
+            .modal-tip-title {
+                font-size: 2rem;
+            }
+
+            .modal-tip-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ESTILOS PARA BOTONES DINÁMICOS DEL HEADER */
+        .user-actions-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .login-btn-small, .user-profile-btn, .admin-btn-small, .logout-btn-small, .user-name-small, .loading-user {
+            /* Usar los mismos estilos del index */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (igual al index) -->
+    <header class="header">
+        <div class="logo-section">
+            <div class="container">
+                <div class="logo-container">
+                    <div class="logo">
+                        <img src="/images/logo-entre-hojas-amigas.png" alt="Entre Hojas y Amigas" class="logo-img">
+                        <h1>🌿 Entre Hojas y Amigas</h1>
+                    </div>
+                    
+                    <div class="nav-actions">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                        <button class="cart-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </button>
+                        
+                        <div id="userActions" class="user-actions-container">
+                            <span class="loading-user">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="navbar">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li><a href="/">Inicio</a></li>
+                    <li class="dropdown">
+                        <a href="/#productos">Plantas <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/#productos">Interior</a></li>
+                            <li><a href="/#productos">Exterior</a></li>
+                            <li><a href="/#productos">Pet Friendly</a></li>
+                            <li><a href="/#productos">Fácil Cuidado</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#maceteros">Maceteros</a></li>
+                    <li><a href="#regalos">Regalos</a></li>
+                    <li><a href="/tips" class="active">Tips</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="tips-container">
+        <!-- Botón volver -->
+        <a href="/" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver a la tienda
+        </a>
+
+        <!-- Header de tips -->
+        <div class="tips-header">
+            <h1>💡 Tips de Cuidado</h1>
+            <p>Descubre consejos expertos para mantener tus plantas saludables y hermosas. Desde técnicas básicas hasta trucos avanzados.</p>
+        </div>
+
+        <!-- Filtros -->
+        <div class="tips-filters">
+            <div class="filter-group">
+                <label for="filtroCategoria">Categoría</label>
+                <select id="filtroCategoria" class="filter-select">
+                    <option value="todas">Todas las categorías</option>
+                    <option value="Cuidado Básico">Cuidado Básico</option>
+                    <option value="Riego">Riego</option>
+                    <option value="Plagas">Plagas y Enfermedades</option>
+                    <option value="Fertilización">Fertilización</option>
+                    <option value="Trasplante">Trasplante</option>
+                    <option value="Propagación">Propagación</option>
+                    <option value="Luz">Luz y Ubicación</option>
+                    <option value="Temperatura">Temperatura y Humedad</option>
+                    <option value="Herramientas">Herramientas</option>
+                    <option value="Decoración">Decoración</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="filtroDificultad">Dificultad</label>
+                <select id="filtroDificultad" class="filter-select">
+                    <option value="todas">Todas las dificultades</option>
+                    <option value="Fácil">🟢 Fácil</option>
+                    <option value="Intermedio">🟡 Intermedio</option>
+                    <option value="Avanzado">🔴 Avanzado</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button class="filter-select" onclick="limpiarFiltros()" style="background: #e74c3c; color: white; border-color: #e74c3c;">
+                    <i class="fas fa-times"></i> Limpiar filtros
+                </button>
+            </div>
+        </div>
+
+        <!-- Grid de tips -->
+        <div class="tips-grid" id="tipsGrid">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando tips de cuidado...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para tip completo -->
+    <div class="modal" id="tipModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="cerrarModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Contenido dinámico del tip -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer (simplificado) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🌿 Entre Hojas y Amigas</h3>
+                    <p>Tu tienda de plantas de confianza</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-envelope"></i> contacto@entrehojas.cl</p>
+                    <p><i class="fas fa-phone"></i> +56 9 1234 5678</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let allTips = [];
+        let filteredTips = [];
+
+        // Cargar tips al inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserButtons();
+            cargarTips();
+            configurarFiltros();
+        });
+
+        // Función para cargar tips desde la API
+        async function cargarTips() {
+            try {
+                const response = await fetch('/api/tips');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const tips = await response.json();
+                allTips = Array.isArray(tips) ? tips : [];
+                filteredTips = [...allTips];
+                mostrarTips(filteredTips);
+                
+            } catch (error) {
+                console.error('Error cargando tips:', error);
+                mostrarError('Error al cargar los tips: ' + error.message);
+            }
+        }
+
+        // Mostrar tips en el grid
+        function mostrarTips(tips) {
+            const grid = document.getElementById('tipsGrid');
+            
+            if (tips.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>No hay tips disponibles</h3>
+                        <p>Pronto tendremos increíbles consejos para ti</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = tips.map(tip => `
+                <div class="tip-card" onclick="abrirTipCompleto('${tip._id}')">
+                    <div class="tip-image" style="background-image: url('${tip.imagen}')">
+                        <div class="tip-category">${tip.categoria}</div>
+                        <div class="tip-difficulty ${tip.dificultad.toLowerCase().replace('á', 'a').replace('í', 'i')}">${tip.dificultad}</div>
+                    </div>
+                    <div class="tip-content">
+                        <h3 class="tip-title">${tip.titulo}</h3>
+                        <p class="tip-description">${tip.descripcionCorta}</p>
+                        <div class="tip-author">
+                            <i class="fas fa-user-circle"></i>
+                            Por ${tip.autor}
+                        </div>
+                        <div class="tip-actions">
+                            <button class="btn-ver-completo" onclick="event.stopPropagation(); abrirTipCompleto('${tip._id}')">
+                                <i class="fas fa-eye"></i>
+                                Ver Completo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Mostrar error
+        function mostrarError(mensaje) {
+            const grid = document.getElementById('tipsGrid');
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error al cargar tips</h3>
+                    <p>${mensaje}</p>
+                    <button class="btn-ver-completo" onclick="cargarTips()" style="margin-top: 1rem;">
+                        <i class="fas fa-refresh"></i>
+                        Intentar de nuevo
+                    </button>
+                </div>
+            `;
+        }
+
+        // Configurar filtros
+        function configurarFiltros() {
+            const filtroCategoria = document.getElementById('filtroCategoria');
+            const filtroDificultad = document.getElementById('filtroDificultad');
+
+            filtroCategoria.addEventListener('change', aplicarFiltros);
+            filtroDificultad.addEventListener('change', aplicarFiltros);
+        }
+
+        // Aplicar filtros
+        function aplicarFiltros() {
+            const categoria = document.getElementById('filtroCategoria').value;
+            const dificultad = document.getElementById('filtroDificultad').value;
+
+            filteredTips = allTips.filter(tip => {
+                const pasaCategoria = categoria === 'todas' || tip.categoria === categoria;
+                const pasaDificultad = dificultad === 'todas' || tip.dificultad === dificultad;
+                return pasaCategoria && pasaDificultad;
+            });
+
+            mostrarTips(filteredTips);
+        }
+
+        // Limpiar filtros
+        function limpiarFiltros() {
+            document.getElementById('filtroCategoria').value = 'todas';
+            document.getElementById('filtroDificultad').value = 'todas';
+            filteredTips = [...allTips];
+            mostrarTips(filteredTips);
+        }
+
+        // Abrir tip completo en modal
+        function abrirTipCompleto(tipId) {
+            const tip = allTips.find(t => t._id === tipId);
+            if (!tip) return;
+
+            const modalContent = document.getElementById('modalContent');
+            const dificultadClass = tip.dificultad.toLowerCase().replace('á', 'a').replace('í', 'i');
+            
+            modalContent.innerHTML = `
+                <div class="modal-tip-image" style="background-image: url('${tip.imagen}')"></div>
+                
+                <h2 class="modal-tip-title">${tip.titulo}</h2>
+                
+                <div class="modal-tip-meta">
+                    <div class="meta-badge meta-categoria">
+                        <i class="fas fa-tag"></i>
+                        ${tip.categoria}
+                    </div>
+                    <div class="meta-badge meta-dificultad tip-difficulty ${dificultadClass}">
+                        <i class="fas fa-star"></i>
+                        ${tip.dificultad}
+                    </div>
+                    <div class="meta-badge meta-autor">
+                        <i class="fas fa-user-circle"></i>
+                        ${tip.autor}
+                    </div>
+                </div>
+                
+                <div class="modal-tip-description">
+                    ${tip.descripcionCompleta}
+                </div>
+                
+                ${tip.pasos && tip.pasos.length > 0 ? `
+                    <div class="tip-steps">
+                        <h4>
+                            <i class="fas fa-list-ol"></i>
+                            Pasos a seguir
+                        </h4>
+                        ${tip.pasos.map((paso, index) => `
+                            <div class="step-item">
+                                <div class="step-number">${index + 1}</div>
+                                <div class="step-text">${paso}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+
+            document.getElementById('tipModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Cerrar modal
+        function cerrarModal() {
+            document.getElementById('tipModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cerrar modal con ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                cerrarModal();
+            }
+        });
+
+        // Cerrar modal haciendo clic fuera
+        document.getElementById('tipModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModal();
+            }
+        });
+
+        // Función para actualizar botones de usuario (copiada del index)
+        async function updateUserButtons() {
+            const userActionsContainer = document.getElementById('userActions');
+            
+            try {
+                const response = await fetch('/api/session-status');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const sessionData = await response.json();
+                
+                if (sessionData.isLoggedIn) {
+                    if (sessionData.userType === 'admin') {
+                        userActionsContainer.innerHTML = `
+                            <span class="user-name-small">👑 ${sessionData.userName}</span>
+                            <a href="/admin" class="admin-btn-small">
+                                <i class="fas fa-cog"></i> Admin
+                            </a>
+                            <button class="logout-btn-small" onclick="logout()" title="Cerrar Sesión">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        `;
+                    } else {
+                        userActionsContainer.innerHTML = `
+                            <span class="user-name-small">👤 ${sessionData.userName}</span>
+                            <a href="/perfil" class="user-profile-btn">
+                                <i class="fas fa-user"></i> Mi Perfil
+                            </a>
+                            <button class="logout-btn-small" onclick="logout()" title="Cerrar Sesión">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        `;
+                    }
+                } else {
+                    userActionsContainer.innerHTML = `
+                        <a href="/login" class="login-btn-small">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </a>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Error al verificar sesión:', error);
+                userActionsContainer.innerHTML = `
+                    <a href="/login" class="login-btn-small">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                    </a>
+                `;
+            }
+        }
+
+        // Función para cerrar sesión
+        async function logout() {
+            try {
+                const response = await fetch('/api/logout', { method: 'POST' });
+                if (response.ok) {
+                    await updateUserButtons();
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Error al cerrar sesión:', error);
+            }
+        }
+    </script>
+</body>
+</html>

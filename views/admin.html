@@ -1707,87 +1707,47 @@
         // ===============================================
 
         // Cargar tips al inicializar dashboard
-        function cargarTipsAdmin() {
-            fetch('/api/tips')
-                .then(response => response.json())
-                .then(tips => {
-                    tipsData = tips;
-                    mostrarTipsAdmin();
-                    actualizarEstadisticasTips();
-                })
-                .catch(error => {
-                    console.error('Error cargando tips:', error);
-                });
-        }
+function cargarTipsAdmin() {
+    const tipsContainer = document.getElementById('tipsContainer');
+    
+    if (tipsContainer) {
+        tipsContainer.innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Cargando tips...</p></div>`;
+    }
+    
+    fetch('/api/tips')
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+        })
+        .then(tips => {
+            tipsData = Array.isArray(tips) ? tips : [];
+            mostrarTipsAdmin();
+            actualizarEstadisticasTips();
+        })
+        .catch(error => {
+            console.error('❌ Error cargando tips:', error);
+            tipsData = [];
+            if (tipsContainer) {
+                tipsContainer.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error cargando tips</h3><p>${error.message}</p></div>`;
+            }
+        });
+}
 
         function mostrarTipsAdmin() {
-            const container = document.getElementById('tipsContainer');
-            
-            if (tipsData.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-lightbulb"></i>
-                        <h3>No hay tips registrados</h3>
-                        <p>Comienza agregando tu primer tip de cuidado</p>
-                        <button class="btn btn-primary" onclick="showPage('nuevo-tip')">
-                            <i class="fas fa-plus"></i> Agregar Primer Tip
-                        </button>
-                    </div>
-                `;
-                return;
-            }
+    const container = document.getElementById('tipsContainer');
+    if (!container) return;
+    
+    if (!tipsData || !Array.isArray(tipsData)) {
+        tipsData = [];
+    }
+    
+    if (tipsData.length === 0) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-lightbulb"></i><h3>No hay tips registrados</h3><button class="btn btn-primary" onclick="showPage('nuevo-tip')">Agregar Primer Tip</button></div>`;
+        return;
+    }
 
-            container.innerHTML = `
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Imagen</th>
-                                <th>Título</th>
-                                <th>Categoría</th>
-                                <th>Dificultad</th>
-                                <th>Autor</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tipsData.map(tip => `
-                                <tr>
-                                    <td>
-                                        <img src="${tip.imagen || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=100'}" 
-                                             alt="${tip.titulo}">
-                                    </td>
-                                    <td><strong>${tip.titulo}</strong></td>
-                                    <td>${tip.categoria}</td>
-                                    <td>
-                                        <span class="status-badge ${getDificultadClass(tip.dificultad)}">
-                                            ${tip.dificultad}
-                                        </span>
-                                    </td>
-                                    <td>${tip.autor || 'N/A'}</td>
-                                    <td>
-                                        <span class="status-badge ${tip.activo ? 'status-active' : 'status-inactive'}">
-                                            ${tip.activo ? 'Activo' : 'Inactivo'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="table-actions">
-                                            <button class="action-btn edit" onclick="editarTip('${tip._id}')">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="action-btn delete" onclick="confirmarEliminarTip('${tip._id}', '${tip.titulo}')">
-                                                <i class="fas fa-trash"></i> Eliminar
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
+    container.innerHTML = `<div class="table-container"><table class="table"><thead><tr><th>Imagen</th><th>Título</th><th>Categoría</th><th>Dificultad</th><th>Autor</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${tipsData.map(tip => `<tr><td><img src="${tip.imagen || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=100'}" alt="${tip.titulo}"></td><td><strong>${tip.titulo}</strong></td><td>${tip.categoria}</td><td><span class="status-badge ${getDificultadClass(tip.dificultad)}">${tip.dificultad}</span></td><td>${tip.autor || 'N/A'}</td><td><span class="status-badge ${tip.activo ? 'status-active' : 'status-inactive'}">${tip.activo ? 'Activo' : 'Inactivo'}</span></td><td><div class="table-actions"><button class="action-btn edit" onclick="editarTip('${tip._id}')">Editar</button><button class="action-btn delete" onclick="confirmarEliminarTip('${tip._id}', '${tip.titulo}')">Eliminar</button></div></td></tr>`).join('')}</tbody></table></div>`;
+}
 
         function getDificultadClass(dificultad) {
             switch(dificultad?.toLowerCase()) {
@@ -1798,12 +1758,13 @@
             }
         }
 
-        function actualizarEstadisticasTips() {
-            const totalTipsElement = document.getElementById('totalTips');
-            if (totalTipsElement) {
-                totalTipsElement.textContent = tipsData.length;
-            }
-        }
+function actualizarEstadisticasTips() {
+    const totalTipsElement = document.getElementById('totalTips');
+    if (totalTipsElement) {
+        const total = Array.isArray(tipsData) ? tipsData.length : 0;
+        totalTipsElement.textContent = total;
+    }
+}
 
         // Funciones para manejo de pestañas de upload (tips)
         function switchTipUploadTab(tabType) {

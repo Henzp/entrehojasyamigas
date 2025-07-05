@@ -4,8 +4,8 @@
   "description": "Tienda de plantas online - Entre Hojas y Amigas",
   "main": "api/index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
