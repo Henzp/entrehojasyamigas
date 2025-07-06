@@ -1,4 +1,4 @@
-// ✅ SERVIDOR OPTIMIZADO Y COMPLETO CON TIPS - VERSIÓN FINAL
+// ✅ SERVIDOR OPTIMIZADO Y COMPLETO CON TIPS - VERSIÓN FINAL CORREGIDA
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -182,7 +182,10 @@ async function conectarMongoDB() {
     }
 }
 
+// ===============================================
 // ✅ ESQUEMAS DE BASE DE DATOS
+// ===============================================
+
 const usuarioSchema = new mongoose.Schema({
     nombre: { type: String, required: true, trim: true },
     apellido: { type: String, required: true, trim: true },
@@ -215,7 +218,21 @@ const bannerSchema = new mongoose.Schema({
     fechaActualizacion: { type: Date, default: Date.now }
 });
 
-// ✅ NUEVO ESQUEMA: TIPS
+const carritoSchema = new mongoose.Schema({
+    usuarioId: { type: String, required: true }, // ID del usuario o sessionId para anónimos
+    items: [{
+        productoId: { type: String, required: true },
+        nombre: { type: String, required: true },
+        precio: { type: Number, required: true },
+        cantidad: { type: Number, required: true, min: 1 },
+        imagen: { type: String },
+        fechaAgregado: { type: Date, default: Date.now }
+    }],
+    total: { type: Number, default: 0 },
+    fechaCreacion: { type: Date, default: Date.now },
+    fechaActualizacion: { type: Date, default: Date.now }
+});
+
 const tipSchema = new mongoose.Schema({
     titulo: { type: String, required: true, trim: true },
     categoria: { 
@@ -256,7 +273,8 @@ const tipSchema = new mongoose.Schema({
     fechaActualizacion: { type: Date, default: Date.now }
 });
 
-// Índices para mejor rendimiento
+// ✅ ÍNDICES PARA MEJOR RENDIMIENTO
+carritoSchema.index({ usuarioId: 1 });
 tipSchema.index({ categoria: 1, activo: 1 });
 tipSchema.index({ dificultad: 1 });
 tipSchema.index({ fechaCreacion: -1 });
@@ -265,9 +283,13 @@ tipSchema.index({ fechaCreacion: -1 });
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 const Producto = mongoose.model('Producto', productoSchema);
 const Banner = mongoose.model('Banner', bannerSchema);
+const Carrito = mongoose.model('Carrito', carritoSchema);
 const Tip = mongoose.model('Tip', tipSchema);
 
-// ✅ RUTAS PARA SERVIR PÁGINAS HTML CON HEADERS CORRECTOS
+// ===============================================
+// ✅ RUTAS PARA SERVIR PÁGINAS HTML
+// ===============================================
+
 const servirPagina = (archivo) => (req, res) => {
     try {
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -284,9 +306,12 @@ app.get('/login', servirPagina('login.html'));
 app.get('/register', servirPagina('register.html'));
 app.get('/perfil', servirPagina('perfil.html'));
 app.get('/producto/:id', servirPagina('producto.html'));
-app.get('/tips', servirPagina('tips.html')); // ✅ NUEVA RUTA
+app.get('/tips', servirPagina('tips.html'));
 
+// ===============================================
 // ✅ API DE PRODUCTOS
+// ===============================================
+
 app.get('/api/productos', async (req, res) => {
     try {
         console.log('📡 API /api/productos llamada');
@@ -384,7 +409,10 @@ app.delete('/api/productos/:id', async (req, res) => {
     }
 });
 
+// ===============================================
 // ✅ API DE BANNER
+// ===============================================
+
 app.get('/api/banner', async (req, res) => {
     try {
         console.log('📡 API /api/banner llamada');
@@ -482,7 +510,303 @@ app.delete('/api/banner/:id', async (req, res) => {
 });
 
 // ===============================================
-// ✅ NUEVAS API DE TIPS
+// ✅ API DE CARRITO
+// ===============================================
+
+// Obtener carrito del usuario
+app.get('/api/carrito', async (req, res) => {
+    try {
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.json({ items: [], total: 0 });
+        }
+        
+        const carrito = await Carrito.findOne({ usuarioId });
+        
+        if (!carrito) {
+            return res.json({ items: [], total: 0 });
+        }
+        
+        res.json({
+            items: carrito.items,
+            total: carrito.total,
+            fechaActualizacion: carrito.fechaActualizacion
+        });
+        
+    } catch (error) {
+        console.error('Error obteniendo carrito:', error);
+        res.json({ items: [], total: 0 });
+    }
+});
+
+// Agregar producto al carrito
+app.post('/api/carrito/agregar', async (req, res) => {
+    try {
+        const { productoId, cantidad = 1 } = req.body;
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        if (!productoId) {
+            return res.status(400).json({ error: 'ProductoId es requerido' });
+        }
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        // Buscar el producto
+        const producto = await Producto.findById(productoId);
+        if (!producto) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+        
+        if (producto.stock < cantidad) {
+            return res.status(400).json({ error: 'Stock insuficiente' });
+        }
+        
+        // Buscar o crear carrito
+        let carrito = await Carrito.findOne({ usuarioId });
+        
+        if (!carrito) {
+            carrito = new Carrito({
+                usuarioId,
+                items: [],
+                total: 0
+            });
+        }
+        
+        // Verificar si el producto ya está en el carrito
+        const itemExistente = carrito.items.find(item => item.productoId === productoId);
+        
+        if (itemExistente) {
+            // Verificar stock total
+            if (producto.stock < itemExistente.cantidad + cantidad) {
+                return res.status(400).json({ error: 'Stock insuficiente' });
+            }
+            itemExistente.cantidad += cantidad;
+        } else {
+            // Agregar nuevo item
+            carrito.items.push({
+                productoId: producto._id.toString(),
+                nombre: producto.nombre,
+                precio: producto.precio,
+                cantidad: cantidad,
+                imagen: producto.imagenes[0] || '',
+                fechaAgregado: new Date()
+            });
+        }
+        
+        // Calcular total
+        carrito.total = carrito.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        carrito.fechaActualizacion = new Date();
+        
+        await carrito.save();
+        
+        res.json({
+            message: 'Producto agregado al carrito',
+            carrito: {
+                items: carrito.items,
+                total: carrito.total
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error agregando al carrito:', error);
+        res.status(500).json({ error: 'Error agregando producto al carrito' });
+    }
+});
+
+// Actualizar cantidad de producto en carrito
+app.put('/api/carrito/actualizar/:productoId', async (req, res) => {
+    try {
+        const { productoId } = req.params;
+        const { cantidad } = req.body;
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        if (!cantidad || cantidad < 1) {
+            return res.status(400).json({ error: 'Cantidad debe ser mayor a 0' });
+        }
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        const carrito = await Carrito.findOne({ usuarioId });
+        if (!carrito) {
+            return res.status(404).json({ error: 'Carrito no encontrado' });
+        }
+        
+        const item = carrito.items.find(item => item.productoId === productoId);
+        if (!item) {
+            return res.status(404).json({ error: 'Producto no encontrado en carrito' });
+        }
+        
+        // Verificar stock
+        const producto = await Producto.findById(productoId);
+        if (producto && producto.stock < cantidad) {
+            return res.status(400).json({ error: 'Stock insuficiente' });
+        }
+        
+        item.cantidad = cantidad;
+        
+        // Recalcular total
+        carrito.total = carrito.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        carrito.fechaActualizacion = new Date();
+        
+        await carrito.save();
+        
+        res.json({
+            message: 'Cantidad actualizada',
+            carrito: {
+                items: carrito.items,
+                total: carrito.total
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error actualizando carrito:', error);
+        res.status(500).json({ error: 'Error actualizando carrito' });
+    }
+});
+
+// Eliminar producto del carrito
+app.delete('/api/carrito/eliminar/:productoId', async (req, res) => {
+    try {
+        const { productoId } = req.params;
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        const carrito = await Carrito.findOne({ usuarioId });
+        if (!carrito) {
+            return res.status(404).json({ error: 'Carrito no encontrado' });
+        }
+        
+        carrito.items = carrito.items.filter(item => item.productoId !== productoId);
+        
+        // Recalcular total
+        carrito.total = carrito.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        carrito.fechaActualizacion = new Date();
+        
+        await carrito.save();
+        
+        res.json({
+            message: 'Producto eliminado del carrito',
+            carrito: {
+                items: carrito.items,
+                total: carrito.total
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error eliminando del carrito:', error);
+        res.status(500).json({ error: 'Error eliminando del carrito' });
+    }
+});
+
+// Limpiar carrito completo
+app.delete('/api/carrito/limpiar', async (req, res) => {
+    try {
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        await Carrito.findOneAndDelete({ usuarioId });
+        
+        res.json({
+            message: 'Carrito limpiado',
+            carrito: {
+                items: [],
+                total: 0
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error limpiando carrito:', error);
+        res.status(500).json({ error: 'Error limpiando carrito' });
+    }
+});
+
+// Sincronizar carrito de localStorage con base de datos
+app.post('/api/carrito/sincronizar', async (req, res) => {
+    try {
+        const { items } = req.body;
+        let usuarioId = req.session?.userId;
+        
+        if (!usuarioId) {
+            return res.status(401).json({ error: 'Usuario no autenticado' });
+        }
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        // Buscar carrito existente del usuario
+        let carrito = await Carrito.findOne({ usuarioId });
+        
+        if (!carrito) {
+            carrito = new Carrito({
+                usuarioId,
+                items: [],
+                total: 0
+            });
+        }
+        
+        // Sincronizar items del localStorage
+        if (items && items.length > 0) {
+            for (const item of items) {
+                // Verificar que el producto existe y tiene stock
+                const producto = await Producto.findById(item.productoId);
+                if (producto && producto.stock >= item.cantidad) {
+                    const itemExistente = carrito.items.find(i => i.productoId === item.productoId);
+                    
+                    if (itemExistente) {
+                        // Sumar cantidades si no excede el stock
+                        const nuevaCantidad = itemExistente.cantidad + item.cantidad;
+                        if (producto.stock >= nuevaCantidad) {
+                            itemExistente.cantidad = nuevaCantidad;
+                        }
+                    } else {
+                        // Agregar nuevo item
+                        carrito.items.push({
+                            productoId: item.productoId,
+                            nombre: producto.nombre,
+                            precio: producto.precio,
+                            cantidad: item.cantidad,
+                            imagen: producto.imagenes[0] || '',
+                            fechaAgregado: new Date()
+                        });
+                    }
+                }
+            }
+        }
+        
+        // Recalcular total
+        carrito.total = carrito.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        carrito.fechaActualizacion = new Date();
+        
+        await carrito.save();
+        
+        res.json({
+            message: 'Carrito sincronizado',
+            carrito: {
+                items: carrito.items,
+                total: carrito.total
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error sincronizando carrito:', error);
+        res.status(500).json({ error: 'Error sincronizando carrito' });
+    }
+});
+
+// ===============================================
+// ✅ API DE TIPS
 // ===============================================
 
 // Obtener todos los tips
@@ -743,7 +1067,10 @@ app.get('/api/tips/stats/dashboard', async (req, res) => {
     }
 });
 
+// ===============================================
 // ✅ API DE IMÁGENES
+// ===============================================
+
 app.post('/api/upload-images', (req, res) => {
     upload.array('images', 10)(req, res, async (err) => {
         if (err) {
@@ -824,7 +1151,10 @@ app.get('/api/uploaded-images', async (req, res) => {
     }
 });
 
+// ===============================================
 // ✅ API DE AUTENTICACIÓN
+// ===============================================
+
 app.post('/api/register', async (req, res) => {
     try {
         if (mongoose.connection.readyState !== 1) {
@@ -1026,7 +1356,10 @@ app.get('/api/session-status', async (req, res) => {
     }
 });
 
-// ✅ NUEVAS RUTAS API PARA PERFIL DE USUARIO
+// ===============================================
+// ✅ API DE PERFIL DE USUARIO
+// ===============================================
+
 app.get('/api/user-profile', async (req, res) => {
     try {
         if (!req.session || !req.session.userId || req.session.isAdmin) {
@@ -1148,7 +1481,10 @@ app.put('/api/user-profile', async (req, res) => {
     }
 });
 
-// ✅ RUTAS DE TESTING
+// ===============================================
+// ✅ API DE TESTING Y ESTADO
+// ===============================================
+
 app.get('/api/test/estado-db', async (req, res) => {
     try {
         const estadoConexion = mongoose.connection.readyState;
@@ -1227,7 +1563,11 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// ✅ FUNCIÓN PARA INICIALIZAR BANNER
+// ===============================================
+// ✅ FUNCIONES DE INICIALIZACIÓN
+// ===============================================
+
+// Función para inicializar banner
 async function inicializarBanner() {
     try {
         if (mongoose.connection.readyState !== 1) {
@@ -1281,7 +1621,7 @@ async function inicializarBanner() {
     }
 }
 
-// ✅ FUNCIÓN PARA INICIALIZAR TIPS DE EJEMPLO
+// Función para inicializar tips de ejemplo
 async function inicializarTipsEjemplo() {
     try {
         if (mongoose.connection.readyState !== 1) {
@@ -1392,7 +1732,10 @@ async function inicializarTipsEjemplo() {
     }
 }
 
+// ===============================================
 // ✅ MIDDLEWARE DE MANEJO DE ERRORES
+// ===============================================
+
 app.use((err, req, res, next) => {
     console.error('❌ Error del servidor:', err);
     
@@ -1422,7 +1765,7 @@ app.use('*', (req, res) => {
 });
 
 // ===============================================
-// INICIALIZACIÓN CORREGIDA PARA VERCEL
+// ✅ INICIALIZACIÓN DEL SERVIDOR
 // ===============================================
 
 const PORT = process.env.PORT || 3000;
