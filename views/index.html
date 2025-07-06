@@ -15,7 +15,7 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             transition: all 0.4s ease;
             border: 2px solid transparent;
-            height: 100%; /* Asegurar que todas las cards tengan la misma altura */
+            height: 100%;
             display: flex;
             flex-direction: column;
         }
@@ -26,14 +26,13 @@
             border-color: #90ee90;
         }
 
-        /* ✅ CONTENEDOR DE IMÁGENES CON TAMAÑO FIJO Y CLICKEABLE */
         .producto-images {
             position: relative;
-            height: 280px; /* Altura fija para todas las imágenes */
+            height: 280px;
             width: 100%;
             overflow: hidden;
-            background: #f8f9fa; /* Color de fondo por si la imagen no carga */
-            cursor: pointer; /* Indica que es clickeable */
+            background: #f8f9fa;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
@@ -41,12 +40,11 @@
             transform: scale(1.02);
         }
 
-        /* ✅ IMAGEN PRINCIPAL CON TAMAÑO UNIFORME */
         .producto-image {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* ✅ ARREGLADO: Muestra imagen completa */
-            object-position: center; /* Centra la imagen */
+            object-fit: contain;
+            object-position: center;
             transition: all 0.5s ease;
             position: absolute;
             top: 0;
@@ -61,7 +59,6 @@
             opacity: 1;
         }
 
-        /* ✅ INDICADORES DE MÚLTIPLES IMÁGENES */
         .image-dots {
             position: absolute;
             bottom: 15px;
@@ -88,16 +85,14 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        /* ✅ CONTENIDO DE LA TARJETA */
         .producto-info {
             padding: 2rem;
-            flex: 1; /* Ocupa el espacio restante */
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        /* ✅ INFORMACIÓN DEL PRODUCTO */
         .producto-content {
             flex: 1;
         }
@@ -110,7 +105,7 @@
             margin-bottom: 0.8rem;
             text-shadow: 1px 1px 2px rgba(45, 80, 22, 0.1);
             line-height: 1.2;
-            cursor: pointer; /* Nombre también clickeable */
+            cursor: pointer;
             transition: color 0.3s ease;
         }
 
@@ -125,7 +120,7 @@
             margin-bottom: 1.5rem;
             line-height: 1.6;
             display: -webkit-box;
-            -webkit-line-clamp: 3; /* Limita a 3 líneas */
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -139,11 +134,10 @@
             text-shadow: 1px 1px 2px rgba(231, 76, 60, 0.1);
         }
 
-        /* ✅ BOTONES DE ACCIÓN MEJORADOS */
         .producto-botones {
             display: flex;
             gap: 0.8rem;
-            margin-top: auto; /* Empuja los botones hacia abajo */
+            margin-top: auto;
         }
 
         .btn-agregar, .btn-comprar {
@@ -182,7 +176,6 @@
             transform: translateY(-2px);
         }
 
-        /* ✅ GRID DE PRODUCTOS MEJORADO */
         .productos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -190,7 +183,6 @@
             margin-top: 3rem;
         }
 
-        /* ✅ INDICADOR DE STOCK */
         .stock-indicator {
             position: absolute;
             top: 15px;
@@ -209,7 +201,6 @@
             background: rgba(231, 76, 60, 0.9);
         }
 
-        /* ✅ BADGE DE CATEGORÍA */
         .categoria-badge {
             position: absolute;
             top: 15px;
@@ -225,7 +216,6 @@
             z-index: 5;
         }
 
-        /* ✅ LOADING MEJORADO */
         .loading {
             grid-column: 1 / -1;
             text-align: center;
@@ -245,7 +235,6 @@
             50% { opacity: 0.5; }
         }
 
-        /* ✅ ESTADO VACÍO */
         .no-productos {
             grid-column: 1 / -1;
             text-align: center;
@@ -267,7 +256,6 @@
             margin-bottom: 1rem;
         }
 
-        /* ✅ BANNER DE IMÁGENES ANIMADO */
         .banner-imagenes {
             background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
             padding: 4rem 0;
@@ -298,7 +286,7 @@
             display: flex;
             gap: 2rem;
             animation: scroll-left 30s linear infinite;
-            width: calc(200% + 4rem); /* Ancho doble para el efecto infinito */
+            width: calc(200% + 4rem);
         }
 
         .banner-item {
@@ -332,7 +320,6 @@
             transform: scale(1.05);
         }
 
-        /* Animación de desplazamiento infinito */
         @keyframes scroll-left {
             0% {
                 transform: translateX(0);
@@ -342,77 +329,10 @@
             }
         }
 
-        /* Efecto de pausa al hacer hover */
         .banner-track:hover {
             animation-play-state: paused;
         }
 
-        /* ✅ RESPONSIVE MEJORADO */
-        @media (max-width: 768px) {
-            .productos-grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 2rem;
-            }
-            
-            .producto-images {
-                height: 250px; /* Altura un poco menor en móvil */
-            }
-            
-            .producto-info {
-                padding: 1.5rem;
-            }
-            
-            .producto-nombre {
-                font-size: 1.4rem;
-            }
-            
-            .producto-precio {
-                font-size: 1.6rem;
-            }
-            
-            .btn-agregar, .btn-comprar {
-                font-size: 0.9rem;
-                padding: 0.8rem;
-            }
-
-            /* Banner responsive */
-            .banner-imagenes {
-                padding: 2rem 0;
-            }
-            
-            .banner-item {
-                flex: 0 0 250px;
-                height: 160px;
-            }
-            
-            .banner-track {
-                gap: 1.5rem;
-                animation-duration: 25s;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .productos-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .producto-images {
-                height: 220px;
-            }
-
-            .banner-item {
-                flex: 0 0 200px;
-                height: 130px;
-            }
-            
-            .banner-track {
-                gap: 1rem;
-                animation-duration: 20s;
-            }
-        }
-
-        /* ESTILOS PARA BOTONES DINÁMICOS (COPIADOS DEL ORIGINAL) */
         .user-actions-container {
             display: flex;
             align-items: center;
@@ -513,7 +433,374 @@
             font-style: italic;
         }
 
+        /* ✅ ESTILOS PARA MODALES DE CHECKOUT */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-checkout, .modal-exito {
+            background: white;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #2d5016;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+        }
+
+        .btn-cerrar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-cerrar:hover {
+            background: #f0f0f0;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d5016;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2d5016;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .resumen-pedido {
+            background: #f8fff8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            border: 2px solid #e8f5e8;
+        }
+
+        .resumen-pedido h4 {
+            margin: 0 0 1rem 0;
+            color: #2d5016;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+        }
+
+        .items-resumen {
+            margin-bottom: 1rem;
+        }
+
+        .item-resumen {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e8f5e8;
+        }
+
+        .total-resumen {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2d5016;
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 2px solid #2d5016;
+        }
+
+        .modal-footer {
+            padding: 1rem 2rem 2rem 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-primario {
+            background: linear-gradient(135deg, #2d5016, #4a7c59);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primario:hover {
+            background: linear-gradient(135deg, #1a3009, #2d5016);
+            transform: translateY(-2px);
+        }
+
+        .btn-secundario {
+            background: transparent;
+            color: #666;
+            border: 2px solid #ddd;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secundario:hover {
+            background: #f0f0f0;
+            border-color: #bbb;
+        }
+
+        .modal-exito {
+            text-align: center;
+        }
+
+        .mensaje-exito {
+            padding: 2rem;
+        }
+
+        .icono-exito {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #27ae60;
+        }
+
+        .mensaje-exito h4 {
+            color: #2d5016;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+
+        .detalles-pedido {
+            background: #f8fff8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border: 2px solid #e8f5e8;
+        }
+
+        .detalles-pedido p {
+            margin: 0.5rem 0;
+            color: #2d5016;
+        }
+
+        .info-entrega {
+            margin-top: 1.5rem;
+        }
+
+        .info-entrega p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ✅ ESTILOS PARA CARRITO MEJORADOS */
+        .carrito-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            background: white;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .item-imagen img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .item-info h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.9rem;
+            color: #2d5016;
+        }
+
+        .item-precio {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .item-cantidad {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cantidad {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #2d5016;
+        }
+
+        .btn-cantidad:hover {
+            background: #e8f5e8;
+        }
+
+        .cantidad {
+            min-width: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .item-subtotal {
+            font-weight: 600;
+            color: #2d5016;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .btn-eliminar {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-eliminar:hover {
+            background: #c0392b;
+        }
+
+        /* ✅ ANIMACIONES PARA NOTIFICACIONES */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* ✅ RESPONSIVE MEJORADO */
         @media (max-width: 768px) {
+            .productos-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+            
+            .producto-images {
+                height: 250px;
+            }
+            
+            .producto-info {
+                padding: 1.5rem;
+            }
+            
+            .producto-nombre {
+                font-size: 1.4rem;
+            }
+            
+            .producto-precio {
+                font-size: 1.6rem;
+            }
+            
+            .btn-agregar, .btn-comprar {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
+
+            .banner-imagenes {
+                padding: 2rem 0;
+            }
+            
+            .banner-item {
+                flex: 0 0 250px;
+                height: 160px;
+            }
+            
+            .banner-track {
+                gap: 1.5rem;
+                animation-duration: 25s;
+            }
+            
             .user-actions-container {
                 gap: 0.5rem;
             }
@@ -525,6 +812,58 @@
             
             .user-name-small {
                 font-size: 0.7rem;
+            }
+
+            .modal-checkout, .modal-exito {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn-primario, .btn-secundario {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .productos-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .producto-images {
+                height: 220px;
+            }
+
+            .banner-item {
+                flex: 0 0 200px;
+                height: 130px;
+            }
+            
+            .banner-track {
+                gap: 1rem;
+                animation-duration: 20s;
+            }
+
+            .carrito-item {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .item-imagen {
+                flex: 0 0 40px;
+            }
+
+            .item-imagen img {
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
@@ -541,7 +880,6 @@
                         <h1>🌿 Entre Hojas y Amigas</h1>
                     </div>
                     
-                    <!-- nav-actions con botones pequeños y estéticos -->
                     <div class="nav-actions">
                         <button class="search-btn"><i class="fas fa-search"></i></button>
                         <button class="cart-btn" onclick="toggleCarrito()">
@@ -549,9 +887,7 @@
                             <span class="cart-count" id="cartCount">0</span>
                         </button>
                         
-                        <!-- Contenedor mejorado de acciones de usuario -->
                         <div id="userActions" class="user-actions-container">
-                            <!-- Loading inicial -->
                             <span class="loading-user">Cargando...</span>
                         </div>
                     </div>
@@ -639,7 +975,7 @@
                     <div class="categoria-overlay">
                         <h3>Fácil Cuidado</h3>
                         <p>Ideales para comenzar</p>
-                        <button class="ver-mas">Ver más</button>
+                        <button class="ver-más">Ver más</button>
                     </div>
                 </div>
                 
@@ -670,7 +1006,6 @@
             </div>
             
             <div class="productos-grid" id="productosGrid">
-                <!-- Los productos se cargarán dinámicamente desde la base de datos -->
                 <div class="loading">
                     <i class="fas fa-spinner fa-spin"></i>
                     <p>Cargando plantas...</p>
@@ -688,7 +1023,7 @@
         </div>
     </section>
 
-    <!-- ✅ NUEVO: Banner de Imágenes Animado (Dinámico) -->
+    <!-- Banner de Imágenes Animado -->
     <section class="banner-imagenes" id="bannerSection" style="display: none;">
         <div class="banner-container">
             <div class="banner-track" id="bannerTrack">
@@ -766,11 +1101,8 @@
                 <p>&copy; 2024 Entre Hojas y Amigas. Todos los derechos reservados.</p>
             </div>
         </div>
-    </footer>
+    </footer>    
 
-    <!-- Scripts -->
-    <script src="/js/main.js"></script>
-    
     <script>
         // DEBUG: Variable global para ver el estado
         let currentUserState = null;
@@ -792,11 +1124,10 @@
                 const sessionData = await response.json();
                 console.log('📊 Datos de sesión:', sessionData);
                 
-                currentUserState = sessionData; // Para debugging
+                currentUserState = sessionData;
                 
                 if (sessionData.isLoggedIn) {
                     if (sessionData.userType === 'admin') {
-                        // Admin logueado - botón pequeño
                         userActionsContainer.innerHTML = `
                             <span class="user-name-small">👑 ${sessionData.userName}</span>
                             <a href="/admin" class="admin-btn-small">
@@ -808,7 +1139,6 @@
                         `;
                         console.log('✅ UI actualizada para ADMIN');
                     } else {
-                        // Usuario normal logueado
                         userActionsContainer.innerHTML = `
                             <span class="user-name-small">👤 ${sessionData.userName}</span>
                             <a href="/perfil" class="user-profile-btn">
@@ -821,7 +1151,6 @@
                         console.log('✅ UI actualizada para USUARIO');
                     }
                 } else {
-                    // No logueado - solo botón pequeño de login
                     userActionsContainer.innerHTML = `
                         <a href="/login" class="login-btn-small">
                             <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
@@ -833,7 +1162,6 @@
             } catch (error) {
                 console.error('❌ Error al verificar sesión:', error);
                 
-                // Por defecto, mostrar login si hay error
                 userActionsContainer.innerHTML = `
                     <a href="/login" class="login-btn-small">
                         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
@@ -842,7 +1170,7 @@
             }
         }
 
-        // Función para cerrar sesión con mejor manejo
+        // Función para cerrar sesión
         async function logout() {
             try {
                 console.log('🚪 Cerrando sesión...');
@@ -853,9 +1181,7 @@
                 
                 if (response.ok) {
                     console.log('✅ Sesión cerrada');
-                    // Actualizar UI inmediatamente
                     await updateUserButtons();
-                    // Opcional: recargar para limpiar completamente
                     window.location.reload();
                 } else {
                     console.error('❌ Error al cerrar sesión');
@@ -865,31 +1191,27 @@
             }
         }
 
-        // Función de debugging para el usuario
+        // Función de debugging
         function checkUserState() {
             console.log('🔍 Estado actual del usuario:', currentUserState);
             return currentUserState;
         }
 
-        // ✅ NUEVA FUNCIÓN: Cargar banner dinámicamente
+        // Cargar banner dinámicamente
         async function cargarBannerDinamico() {
             try {
                 const response = await fetch('/api/banner');
                 const bannerItems = await response.json();
                 
                 if (bannerItems.length === 0) {
-                    // Ocultar banner si no hay imágenes
                     document.getElementById('bannerSection').style.display = 'none';
                     return;
                 }
                 
-                // Mostrar banner
                 document.getElementById('bannerSection').style.display = 'block';
                 
-                // Crear HTML del banner
                 const bannerTrack = document.getElementById('bannerTrack');
                 
-                // Duplicar las imágenes para efecto infinito
                 const imagenesHTML = bannerItems.map(item => `
                     <div class="banner-item">
                         <img src="${item.imagen}" 
@@ -898,17 +1220,17 @@
                     </div>
                 `).join('');
                 
-                // Primera ronda + segunda ronda (para efecto infinito)
                 bannerTrack.innerHTML = imagenesHTML + imagenesHTML;
                 
                 console.log('✅ Banner cargado con', bannerItems.length, 'imágenes');
                 
             } catch (error) {
                 console.error('❌ Error cargando banner:', error);
-                // Mantener banner oculto si hay error
                 document.getElementById('bannerSection').style.display = 'none';
             }
         }
+
+        // Cargar productos
         async function cargarProductos() {
             const productosGrid = document.getElementById('productosGrid');
             
@@ -931,7 +1253,6 @@
                     const imagenes = producto.imagenes || [];
                     const imagenPrincipal = imagenes[0] || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400';
                     
-                    // Determinar indicador de stock
                     let stockInfo = '';
                     if (producto.stock <= 0) {
                         stockInfo = '<div class="stock-indicator">Agotado</div>';
@@ -985,7 +1306,6 @@
                     `;
                 }).join('');
                 
-                // Configurar filtros
                 configurarFiltros(productos);
                 
             } catch (error) {
@@ -1000,46 +1320,42 @@
             }
         }
 
-        // ✅ NUEVA FUNCIÓN: Ir a la página del producto
+        // Ir a la página del producto
         function verProducto(productoId) {
             console.log('🔍 Navegando a producto:', productoId);
             window.location.href = `/producto/${productoId}`;
         }
 
-        // ✅ NUEVA FUNCIÓN: Cambiar imagen en el carrusel
+        // Cambiar imagen en el carrusel
         function cambiarImagen(dotElement, imageIndex) {
             const card = dotElement.closest('.producto-card');
             const imagenes = card.querySelectorAll('.producto-image');
             const dots = card.querySelectorAll('.dot');
             
-            // Remover clase active de todas las imágenes y dots
             imagenes.forEach(img => img.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
             
-            // Activar la imagen y dot seleccionados
             imagenes[imageIndex].classList.add('active');
             dotElement.classList.add('active');
         }
 
-        // Función para formatear precios
+        // Formatear precios
         function formatearPrecio(precio) {
             return precio.toLocaleString('es-CL');
         }
 
-        // Función para configurar filtros
+        // Configurar filtros
         function configurarFiltros(productos) {
             const filtros = document.querySelectorAll('.filtro-btn');
             const cards = document.querySelectorAll('.producto-card');
             
             filtros.forEach(filtro => {
                 filtro.addEventListener('click', () => {
-                    // Actualizar botones activos
                     filtros.forEach(f => f.classList.remove('active'));
                     filtro.classList.add('active');
                     
                     const categoria = filtro.dataset.categoria;
                     
-                    // Filtrar productos
                     cards.forEach(card => {
                         if (categoria === 'todas' || card.dataset.categoria === categoria) {
                             card.style.display = 'block';
@@ -1051,538 +1367,607 @@
             });
         }
 
-// ===============================================
-// 🛒 SISTEMA DE CARRITO HÍBRIDO COMPLETO
-// ===============================================
+        // ===============================================
+        // 🛒 SISTEMA DE CARRITO HÍBRIDO COMPLETO
+        // ===============================================
 
-let carritoData = {
-    items: [],
-    total: 0
-};
+        let carritoData = {
+            items: [],
+            total: 0
+        };
 
-// Generar sessionId único para usuarios anónimos
-function getSessionId() {
-    let sessionId = localStorage.getItem('carritoSessionId');
-    if (!sessionId) {
-        sessionId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('carritoSessionId', sessionId);
-    }
-    return sessionId;
-}
-
-// Guardar carrito en localStorage
-function guardarCarritoLocal(carrito) {
-    localStorage.setItem('carritoData', JSON.stringify(carrito));
-}
-
-// Cargar carrito desde localStorage
-function cargarCarritoLocal() {
-    const datos = localStorage.getItem('carritoData');
-    return datos ? JSON.parse(datos) : { items: [], total: 0 };
-}
-
-// Calcular total del carrito
-function calcularTotal(items) {
-    return items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-}
-
-// Actualizar contador visual del carrito
-function actualizarContadorCarrito() {
-    const contador = document.getElementById('cartCount');
-    const totalItems = carritoData.items.reduce((sum, item) => sum + item.cantidad, 0);
-    if (contador) {
-        contador.textContent = totalItems;
-    }
-}
-
-// Actualizar contenido visual del carrito
-function actualizarCarritoUI() {
-    const carritoItems = document.getElementById('carritoItems');
-    const carritoTotal = document.getElementById('carritoTotal');
-    
-    if (!carritoItems || !carritoTotal) return;
-    
-    if (carritoData.items.length === 0) {
-        carritoItems.innerHTML = `
-            <div class="carrito-vacio">
-                <i class="fas fa-leaf"></i>
-                <p>Tu carrito está vacío</p>
-                <small>¡Agrega algunas plantas hermosas!</small>
-            </div>
-        `;
-    } else {
-        carritoItems.innerHTML = carritoData.items.map(item => `
-            <div class="carrito-item" data-producto-id="${item.productoId}">
-                <div class="item-imagen">
-                    <img src="${item.imagen || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=80'}" 
-                         alt="${item.nombre}">
-                </div>
-                <div class="item-info">
-                    <h4>${item.nombre}</h4>
-                    <p class="item-precio">$${formatearPrecio(item.precio)}</p>
-                </div>
-                <div class="item-cantidad">
-                    <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', -1)">-</button>
-                    <span class="cantidad">${item.cantidad}</span>
-                    <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', 1)">+</button>
-                </div>
-                <div class="item-subtotal">
-                    $${formatearPrecio(item.precio * item.cantidad)}
-                </div>
-                <button class="btn-eliminar" onclick="eliminarDelCarrito('${item.productoId}')" title="Eliminar">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
-    }
-    
-    carritoTotal.textContent = formatearPrecio(carritoData.total);
-    actualizarContadorCarrito();
-}
-
-// Cargar carrito al inicializar
-async function cargarCarrito() {
-    try {
-        // Primero intentar cargar desde la base de datos
-        const headers = {};
-        if (!currentUserState?.isLoggedIn) {
-            headers['X-Session-Id'] = getSessionId();
+        // Generar sessionId único para usuarios anónimos
+        function getSessionId() {
+            let sessionId = localStorage.getItem('carritoSessionId');
+            if (!sessionId) {
+                sessionId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('carritoSessionId', sessionId);
+            }
+            return sessionId;
         }
-        
-        const response = await fetch('/api/carrito', { headers });
-        
-        if (response.ok) {
-            const carritoServidor = await response.json();
-            if (carritoServidor.items.length > 0) {
-                carritoData = carritoServidor;
-                guardarCarritoLocal(carritoData);
-                actualizarCarritoUI();
-                return;
+
+        // Guardar carrito en localStorage
+        function guardarCarritoLocal(carrito) {
+            localStorage.setItem('carritoData', JSON.stringify(carrito));
+        }
+
+        // Cargar carrito desde localStorage
+        function cargarCarritoLocal() {
+            const datos = localStorage.getItem('carritoData');
+            return datos ? JSON.parse(datos) : { items: [], total: 0 };
+        }
+
+        // Calcular total del carrito
+        function calcularTotal(items) {
+            return items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        }
+
+        // Actualizar contador visual del carrito
+        function actualizarContadorCarrito() {
+            const contador = document.getElementById('cartCount');
+            const totalItems = carritoData.items.reduce((sum, item) => sum + item.cantidad, 0);
+            if (contador) {
+                contador.textContent = totalItems;
             }
         }
-        
-        // Si no hay datos en el servidor, cargar desde localStorage
-        carritoData = cargarCarritoLocal();
-        actualizarCarritoUI();
-        
-    } catch (error) {
-        console.error('Error cargando carrito:', error);
-        carritoData = cargarCarritoLocal();
-        actualizarCarritoUI();
-    }
-}
 
-// Sincronizar carrito con servidor
-async function sincronizarCarrito() {
-    if (!currentUserState?.isLoggedIn) return;
-    
-    try {
-        const carritoLocal = cargarCarritoLocal();
-        if (carritoLocal.items.length === 0) return;
-        
-        const response = await fetch('/api/carrito/sincronizar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ items: carritoLocal.items })
-        });
-        
-        if (response.ok) {
-            const resultado = await response.json();
-            carritoData = resultado.carrito;
-            guardarCarritoLocal(carritoData);
-            actualizarCarritoUI();
-            console.log('✅ Carrito sincronizado con servidor');
+        // Actualizar contenido visual del carrito
+        function actualizarCarritoUI() {
+            const carritoItems = document.getElementById('carritoItems');
+            const carritoTotal = document.getElementById('carritoTotal');
+            
+            if (!carritoItems || !carritoTotal) return;
+            
+            if (carritoData.items.length === 0) {
+                carritoItems.innerHTML = `
+                    <div class="carrito-vacio">
+                        <i class="fas fa-leaf"></i>
+                        <p>Tu carrito está vacío</p>
+                        <small>¡Agrega algunas plantas hermosas!</small>
+                    </div>
+                `;
+            } else {
+                carritoItems.innerHTML = carritoData.items.map(item => `
+                    <div class="carrito-item" data-producto-id="${item.productoId}">
+                        <div class="item-imagen">
+                            <img src="${item.imagen || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=80'}" 
+                                 alt="${item.nombre}">
+                        </div>
+                        <div class="item-info">
+                            <h4>${item.nombre}</h4>
+                            <p class="item-precio">$${formatearPrecio(item.precio)}</p>
+                        </div>
+                        <div class="item-cantidad">
+                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', -1)">-</button>
+                            <span class="cantidad">${item.cantidad}</span>
+                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', 1)">+</button>
+                        </div>
+                        <div class="item-subtotal">
+                            $${formatearPrecio(item.precio * item.cantidad)}
+                        </div>
+                        <button class="btn-eliminar" onclick="eliminarDelCarrito('${item.productoId}')" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            carritoTotal.textContent = formatearPrecio(carritoData.total);
+            actualizarContadorCarrito();
         }
-    } catch (error) {
-        console.error('Error sincronizando carrito:', error);
-    }
-}
 
-// FUNCIÓN PRINCIPAL: Agregar producto al carrito
-async function agregarAlCarrito(productoId) {
-    try {
-        console.log('🛒 Agregando al carrito:', productoId);
-        
-        // Mostrar feedback inmediato
-        const btnElement = event?.target?.closest('.btn-agregar');
-        if (btnElement) {
-            const textoOriginal = btnElement.innerHTML;
-            btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agregando...';
-            btnElement.disabled = true;
-            
-            setTimeout(() => {
-                btnElement.innerHTML = textoOriginal;
-                btnElement.disabled = false;
-            }, 2000);
-        }
-        
-        const headers = { 'Content-Type': 'application/json' };
-        if (!currentUserState?.isLoggedIn) {
-            headers['X-Session-Id'] = getSessionId();
-        }
-        
-        const response = await fetch('/api/carrito/agregar', {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ 
-                productoId: productoId,
-                cantidad: 1 
-            })
-        });
-        
-        if (response.ok) {
-            const resultado = await response.json();
-            carritoData = resultado.carrito;
-            guardarCarritoLocal(carritoData);
-            actualizarCarritoUI();
-            
-            // Mostrar notificación de éxito
-            mostrarNotificacion('¡Producto agregado al carrito! 🌱', 'success');
-        } else {
-            const error = await response.json();
-            mostrarNotificacion(error.error || 'Error al agregar producto', 'error');
-        }
-        
-    } catch (error) {
-        console.error('Error agregando al carrito:', error);
-        
-        // Fallback: agregar al localStorage si falla el servidor
-        try {
-            const productosResponse = await fetch('/api/productos');
-            const productos = await productosResponse.json();
-            const producto = productos.find(p => p._id === productoId);
-            
-            if (producto) {
-                const carritoLocal = cargarCarritoLocal();
-                const itemExistente = carritoLocal.items.find(item => item.productoId === productoId);
-                
-                if (itemExistente) {
-                    itemExistente.cantidad += 1;
-                } else {
-                    carritoLocal.items.push({
-                        productoId: producto._id,
-                        nombre: producto.nombre,
-                        precio: producto.precio,
-                        cantidad: 1,
-                        imagen: producto.imagenes[0] || ''
-                    });
+        // Cargar carrito al inicializar
+        async function cargarCarrito() {
+            try {
+                const headers = {};
+                if (!currentUserState?.isLoggedIn) {
+                    headers['X-Session-Id'] = getSessionId();
                 }
                 
-                carritoLocal.total = calcularTotal(carritoLocal.items);
-                carritoData = carritoLocal;
-                guardarCarritoLocal(carritoData);
+                const response = await fetch('/api/carrito', { headers });
+                
+                if (response.ok) {
+                    const carritoServidor = await response.json();
+                    if (carritoServidor.items.length > 0) {
+                        carritoData = carritoServidor;
+                        guardarCarritoLocal(carritoData);
+                        actualizarCarritoUI();
+                        return;
+                    }
+                }
+                
+                carritoData = cargarCarritoLocal();
                 actualizarCarritoUI();
                 
-                mostrarNotificacion('Producto agregado al carrito (modo offline) 📦', 'success');
+            } catch (error) {
+                console.error('Error cargando carrito:', error);
+                carritoData = cargarCarritoLocal();
+                actualizarCarritoUI();
             }
-        } catch (fallbackError) {
-            mostrarNotificacion('Error al agregar producto al carrito', 'error');
         }
-    }
-}
 
-// Cambiar cantidad de producto en carrito
-async function cambiarCantidadCarrito(productoId, cambio) {
-    const item = carritoData.items.find(item => item.productoId === productoId);
-    if (!item) return;
-    
-    const nuevaCantidad = item.cantidad + cambio;
-    if (nuevaCantidad <= 0) {
-        eliminarDelCarrito(productoId);
-        return;
-    }
-    
-    try {
-        const headers = { 'Content-Type': 'application/json' };
-        if (!currentUserState?.isLoggedIn) {
-            headers['X-Session-Id'] = getSessionId();
+        // Sincronizar carrito con servidor
+        async function sincronizarCarrito() {
+            if (!currentUserState?.isLoggedIn) return;
+            
+            try {
+                const carritoLocal = cargarCarritoLocal();
+                if (carritoLocal.items.length === 0) return;
+                
+                const response = await fetch('/api/carrito/sincronizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ items: carritoLocal.items })
+                });
+                
+                if (response.ok) {
+                    const resultado = await response.json();
+                    carritoData = resultado.carrito;
+                    guardarCarritoLocal(carritoData);
+                    actualizarCarritoUI();
+                    console.log('✅ Carrito sincronizado con servidor');
+                }
+            } catch (error) {
+                console.error('Error sincronizando carrito:', error);
+            }
         }
-        
-        const response = await fetch(`/api/carrito/actualizar/${productoId}`, {
-            method: 'PUT',
-            headers,
-            body: JSON.stringify({ cantidad: nuevaCantidad })
-        });
-        
-        if (response.ok) {
-            const resultado = await response.json();
-            carritoData = resultado.carrito;
-            guardarCarritoLocal(carritoData);
-            actualizarCarritoUI();
-        } else {
-            throw new Error('Error en servidor');
+
+        // Agregar producto al carrito
+        async function agregarAlCarrito(productoId) {
+            try {
+                console.log('🛒 Agregando al carrito:', productoId);
+                
+                const btnElement = event?.target?.closest('.btn-agregar');
+                if (btnElement) {
+                    const textoOriginal = btnElement.innerHTML;
+                    btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agregando...';
+                    btnElement.disabled = true;
+                    
+                    setTimeout(() => {
+                        btnElement.innerHTML = textoOriginal;
+                        btnElement.disabled = false;
+                    }, 2000);
+                }
+                
+                const headers = { 'Content-Type': 'application/json' };
+                if (!currentUserState?.isLoggedIn) {
+                    headers['X-Session-Id'] = getSessionId();
+                }
+                
+                const response = await fetch('/api/carrito/agregar', {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({ 
+                        productoId: productoId,
+                        cantidad: 1 
+                    })
+                });
+                
+                if (response.ok) {
+                    const resultado = await response.json();
+                    carritoData = resultado.carrito;
+                    guardarCarritoLocal(carritoData);
+                    actualizarCarritoUI();
+                    
+                    mostrarNotificacion('¡Producto agregado al carrito! 🌱', 'success');
+                } else {
+                    const error = await response.json();
+                    mostrarNotificacion(error.error || 'Error al agregar producto', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error agregando al carrito:', error);
+                
+                try {
+                    const productosResponse = await fetch('/api/productos');
+                    const productos = await productosResponse.json();
+                    const producto = productos.find(p => p._id === productoId);
+                    
+                    if (producto) {
+                        const carritoLocal = cargarCarritoLocal();
+                        const itemExistente = carritoLocal.items.find(item => item.productoId === productoId);
+                        
+                        if (itemExistente) {
+                            itemExistente.cantidad += 1;
+                        } else {
+                            carritoLocal.items.push({
+                                productoId: producto._id,
+                                nombre: producto.nombre,
+                                precio: producto.precio,
+                                cantidad: 1,
+                                imagen: producto.imagenes[0] || ''
+                            });
+                        }
+                        
+                        carritoLocal.total = calcularTotal(carritoLocal.items);
+                        carritoData = carritoLocal;
+                        guardarCarritoLocal(carritoData);
+                        actualizarCarritoUI();
+                        
+                        mostrarNotificacion('Producto agregado al carrito (modo offline) 📦', 'success');
+                    }
+                } catch (fallbackError) {
+                    mostrarNotificacion('Error al agregar producto al carrito', 'error');
+                }
+            }
         }
-        
-    } catch (error) {
-        console.error('Error actualizando cantidad:', error);
-        
-        // Fallback local
-        item.cantidad = nuevaCantidad;
-        carritoData.total = calcularTotal(carritoData.items);
-        guardarCarritoLocal(carritoData);
-        actualizarCarritoUI();
-    }
-}
 
-// Eliminar producto del carrito
-async function eliminarDelCarrito(productoId) {
-    try {
-        const headers = {};
-        if (!currentUserState?.isLoggedIn) {
-            headers['X-Session-Id'] = getSessionId();
+        // Cambiar cantidad de producto en carrito
+        async function cambiarCantidadCarrito(productoId, cambio) {
+            const item = carritoData.items.find(item => item.productoId === productoId);
+            if (!item) return;
+            
+            const nuevaCantidad = item.cantidad + cambio;
+            if (nuevaCantidad <= 0) {
+                eliminarDelCarrito(productoId);
+                return;
+            }
+            
+            try {
+                const headers = { 'Content-Type': 'application/json' };
+                if (!currentUserState?.isLoggedIn) {
+                    headers['X-Session-Id'] = getSessionId();
+                }
+                
+                const response = await fetch(`/api/carrito/actualizar/${productoId}`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify({ cantidad: nuevaCantidad })
+                });
+                
+                if (response.ok) {
+                    const resultado = await response.json();
+                    carritoData = resultado.carrito;
+                    guardarCarritoLocal(carritoData);
+                    actualizarCarritoUI();
+                } else {
+                    throw new Error('Error en servidor');
+                }
+                
+            } catch (error) {
+                console.error('Error actualizando cantidad:', error);
+                
+                item.cantidad = nuevaCantidad;
+                carritoData.total = calcularTotal(carritoData.items);
+                guardarCarritoLocal(carritoData);
+                actualizarCarritoUI();
+            }
         }
-        
-        const response = await fetch(`/api/carrito/eliminar/${productoId}`, {
-            method: 'DELETE',
-            headers
-        });
-        
-        if (response.ok) {
-            const resultado = await response.json();
-            carritoData = resultado.carrito;
-            guardarCarritoLocal(carritoData);
-            actualizarCarritoUI();
-            mostrarNotificacion('Producto eliminado del carrito', 'info');
-        } else {
-            throw new Error('Error en servidor');
+
+        // Eliminar producto del carrito
+        async function eliminarDelCarrito(productoId) {
+            try {
+                const headers = {};
+                if (!currentUserState?.isLoggedIn) {
+                    headers['X-Session-Id'] = getSessionId();
+                }
+                
+                const response = await fetch(`/api/carrito/eliminar/${productoId}`, {
+                    method: 'DELETE',
+                    headers
+                });
+                
+                if (response.ok) {
+                    const resultado = await response.json();
+                    carritoData = resultado.carrito;
+                    guardarCarritoLocal(carritoData);
+                    actualizarCarritoUI();
+                    mostrarNotificacion('Producto eliminado del carrito', 'info');
+                } else {
+                    throw new Error('Error en servidor');
+                }
+                
+            } catch (error) {
+                console.error('Error eliminando del carrito:', error);
+                
+                carritoData.items = carritoData.items.filter(item => item.productoId !== productoId);
+                carritoData.total = calcularTotal(carritoData.items);
+                guardarCarritoLocal(carritoData);
+                actualizarCarritoUI();
+                mostrarNotificacion('Producto eliminado del carrito', 'info');
+            }
         }
-        
-    } catch (error) {
-        console.error('Error eliminando del carrito:', error);
-        
-        // Fallback local
-        carritoData.items = carritoData.items.filter(item => item.productoId !== productoId);
-        carritoData.total = calcularTotal(carritoData.items);
-        guardarCarritoLocal(carritoData);
-        actualizarCarritoUI();
-        mostrarNotificacion('Producto eliminado del carrito', 'info');
-    }
-}
 
-// Mostrar/ocultar carrito
-function toggleCarrito() {
-    const sidebar = document.getElementById('carritoSidebar');
-    const overlay = document.getElementById('overlay');
-    
-    if (!sidebar || !overlay) return;
-    
-    const isActive = sidebar.classList.contains('active');
-    
-    if (isActive) {
-        sidebar.classList.remove('active');
-        overlay.classList.remove('active');
-    } else {
-        sidebar.classList.add('active');
-        overlay.classList.add('active');
-    }
-}
-
-// Procesar compra
-async function procesarCompra() {
-    if (carritoData.items.length === 0) {
-        mostrarNotificacion('Tu carrito está vacío', 'warning');
-        return;
-    }
-    
-    if (!currentUserState?.isLoggedIn) {
-        mostrarNotificacion('Debes iniciar sesión para realizar la compra', 'warning');
-        setTimeout(() => {
-            window.location.href = '/login';
-        }, 2000);
-        return;
-    }
-    
-    // Mostrar mensaje de desarrollo
-    mostrarNotificacion('🚧 Sistema de pago en desarrollo. ¡Pronto podrás comprar! 💳', 'info');
-    
-    console.log('🛒 Procesando compra:', carritoData);
-}
-
-// Función para mostrar notificaciones
-function mostrarNotificacion(mensaje, tipo = 'info') {
-    // Crear elemento de notificación
-    const notif = document.createElement('div');
-    notif.className = `notificacion ${tipo}`;
-    notif.innerHTML = `
-        <i class="fas fa-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : tipo === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
-        ${mensaje}
-    `;
-    
-    // Estilos de la notificación
-    notif.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        color: white;
-        font-weight: 600;
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        max-width: 400px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        animation: slideInRight 0.3s ease;
-        ${tipo === 'success' ? 'background: #27ae60;' : ''}
-        ${tipo === 'error' ? 'background: #e74c3c;' : ''}
-        ${tipo === 'warning' ? 'background: #f39c12;' : ''}
-        ${tipo === 'info' ? 'background: #3498db;' : ''}
-    `;
-    
-    document.body.appendChild(notif);
-    
-    // Remover después de 4 segundos
-    setTimeout(() => {
-        notif.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => {
-            document.body.removeChild(notif);
-        }, 300);
-    }, 4000);
-}
-
-// CSS para animaciones de notificaciones
-const notifStyles = document.createElement('style');
-notifStyles.textContent = `
-    @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOutRight {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-    
-    .carrito-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-        border-bottom: 1px solid #eee;
-        background: white;
-        margin-bottom: 0.5rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    
-    .item-imagen img {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 4px;
-    }
-    
-    .item-info h4 {
-        margin: 0 0 0.25rem 0;
-        font-size: 0.9rem;
-        color: #2d5016;
-    }
-    
-    .item-precio {
-        margin: 0;
-        font-size: 0.8rem;
-        color: #666;
-    }
-    
-    .item-cantidad {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .btn-cantidad {
-        background: #f8f9fa;
-        border: 1px solid #ddd;
-        width: 30px;
-        height: 30px;
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        color: #2d5016;
-    }
-    
-    .btn-cantidad:hover {
-        background: #e8f5e8;
-    }
-    
-    .cantidad {
-        min-width: 20px;
-        text-align: center;
-        font-weight: 600;
-    }
-    
-    .item-subtotal {
-        font-weight: 600;
-        color: #2d5016;
-        min-width: 80px;
-        text-align: right;
-    }
-    
-    .btn-eliminar {
-        background: #e74c3c;
-        color: white;
-        border: none;
-        width: 30px;
-        height: 30px;
-        border-radius: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .btn-eliminar:hover {
-        background: #c0392b;
-    }
-`;
-document.head.appendChild(notifStyles);
-
+        // Mostrar/ocultar carrito
         function toggleCarrito() {
             const sidebar = document.getElementById('carritoSidebar');
             const overlay = document.getElementById('overlay');
             
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
+            if (!sidebar || !overlay) return;
+            
+            const isActive = sidebar.classList.contains('active');
+            
+            if (isActive) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            }
         }
 
-        function procesarCompra() {
-            console.log('Procesando compra...');
-            // Aquí implementarías la lógica de checkout
-            alert('¡Función de checkout en desarrollo! 💳');
+        // ✅ FUNCIÓN PRINCIPAL: procesarCompra() - COMPLETA
+        async function procesarCompra() {
+            if (carritoData.items.length === 0) {
+                mostrarNotificacion('El carrito está vacío', 'warning');
+                return;
+            }
+            
+            mostrarModalEntrega();
         }
 
-// Ejecutar cuando se carga la página
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Página cargada, inicializando...');
-    updateUserButtons();
-    cargarProductos();
-    cargarBannerDinamico();
-    cargarCarrito(); // ✅ CARGAR CARRITO
-    
-    // Verificar cada 30 segundos
-    setInterval(updateUserButtons, 30000);
-});
+        // Función para mostrar modal de datos de entrega
+        function mostrarModalEntrega() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-checkout">
+                    <div class="modal-header">
+                        <h3>🚚 Datos de Entrega</h3>
+                        <button class="btn-cerrar" onclick="this.closest('.modal-overlay').remove()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEntrega">
+                            <div class="form-group">
+                                <label for="nombreEntrega">Nombre completo *</label>
+                                <input type="text" id="nombreEntrega" name="nombre" required 
+                                       placeholder="Tu nombre completo">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefonoEntrega">Teléfono *</label>
+                                <input type="tel" id="telefonoEntrega" name="telefono" required 
+                                       placeholder="Tu número de teléfono">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="direccionEntrega">Dirección *</label>
+                                <textarea id="direccionEntrega" name="direccion" required 
+                                          placeholder="Dirección completa"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ciudadEntrega">Ciudad *</label>
+                                <input type="text" id="ciudadEntrega" name="ciudad" required 
+                                       placeholder="Tu ciudad">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="codigoPostal">Código Postal</label>
+                                <input type="text" id="codigoPostal" name="codigoPostal" 
+                                       placeholder="Código postal (opcional)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="metodoPago">Método de Pago *</label>
+                                <select id="metodoPago" name="metodoPago" required>
+                                    <option value="efectivo">Efectivo contra entrega</option>
+                                    <option value="transferencia">Transferencia bancaria</option>
+                                    <option value="tarjeta">Tarjeta de crédito/débito</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="notasEntrega">Notas adicionales</label>
+                                <textarea id="notasEntrega" name="notas" 
+                                          placeholder="Instrucciones especiales (opcional)"></textarea>
+                            </div>
+                            
+                            <div class="resumen-pedido">
+                                <h4>📋 Resumen del Pedido</h4>
+                                <div class="items-resumen">
+                                    ${carritoData.items.map(item => `
+                                        <div class="item-resumen">
+                                            <span>${item.nombre} x${item.cantidad}</span>
+                                            <span>$${formatearPrecio(item.precio * item.cantidad)}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div class="total-resumen">
+                                    <strong>Total: $${formatearPrecio(carritoData.total)}</strong>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secundario" 
+                                onclick="this.closest('.modal-overlay').remove()">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn-primario" 
+                                onclick="confirmarPedido()" id="btnConfirmarPedido">
+                            Confirmar Pedido 🛍️
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            setTimeout(() => {
+                document.getElementById('nombreEntrega').focus();
+            }, 100);
+        }
 
-// ✅ Sincronizar carrito cuando cambie el estado del usuario
-const originalUpdateUserButtons = updateUserButtons;
-updateUserButtons = async function() {
-    const estadoAnterior = currentUserState?.isLoggedIn;
-    await originalUpdateUserButtons();
-    const estadoActual = currentUserState?.isLoggedIn;
-    
-    // Si el usuario acaba de hacer login, sincronizar carrito
-    if (!estadoAnterior && estadoActual) {
-        console.log('🔄 Usuario logueado, sincronizando carrito...');
-        await sincronizarCarrito();
-    }
-};
+        // Función para confirmar el pedido
+        async function confirmarPedido() {
+            const form = document.getElementById('formEntrega');
+            const btnConfirmar = document.getElementById('btnConfirmarPedido');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const formData = new FormData(form);
+            const datosEntrega = {
+                nombre: formData.get('nombre').trim(),
+                telefono: formData.get('telefono').trim(),
+                direccion: formData.get('direccion').trim(),
+                ciudad: formData.get('ciudad').trim(),
+                codigoPostal: formData.get('codigoPostal')?.trim() || '',
+                notas: formData.get('notas')?.trim() || ''
+            };
+            
+            const metodoPago = formData.get('metodoPago');
+            
+            if (!datosEntrega.nombre || !datosEntrega.telefono || !datosEntrega.direccion || !datosEntrega.ciudad) {
+                mostrarNotificacion('Por favor completa todos los campos obligatorios', 'error');
+                return;
+            }
+            
+            try {
+                btnConfirmar.disabled = true;
+                btnConfirmar.textContent = 'Procesando... ⏳';
+                
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                
+                if (!currentUserState?.isLoggedIn) {
+                    headers['X-Session-Id'] = getSessionId();
+                }
+                
+                const response = await fetch('/api/pedidos/procesar', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({
+                        datosEntrega: datosEntrega,
+                        metodoPago: metodoPago
+                    })
+                });
+                
+                const resultado = await response.json();
+                
+                if (response.ok && resultado.success) {
+                    carritoData = { items: [], total: 0 };
+                    guardarCarritoLocal(carritoData);
+                    actualizarCarritoUI();
+                    
+                    document.querySelector('.modal-overlay').remove();
+                    
+                    mostrarModalExito(resultado.pedido);
+                    
+                } else {
+                    throw new Error(resultado.error || 'Error procesando el pedido');
+                }
+                
+            } catch (error) {
+                console.error('Error procesando pedido:', error);
+                mostrarNotificacion(error.message || 'Error procesando el pedido. Intenta nuevamente.', 'error');
+                
+            } finally {
+                btnConfirmar.disabled = false;
+                btnConfirmar.textContent = 'Confirmar Pedido 🛍️';
+            }
+        }
 
-        // Exponer función de debug globalmente
+        // Función para mostrar modal de éxito
+        function mostrarModalExito(pedido) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-exito">
+                    <div class="modal-header">
+                        <h3>🎉 ¡Pedido Confirmado!</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mensaje-exito">
+                            <div class="icono-exito">✅</div>
+                            <h4>Tu pedido ha sido procesado exitosamente</h4>
+                            <div class="detalles-pedido">
+                                <p><strong>Número de pedido:</strong> ${pedido.numeroPedido}</p>
+                                <p><strong>Total:</strong> $${formatearPrecio(pedido.total)}</p>
+                                <p><strong>Estado:</strong> ${pedido.estado}</p>
+                                <p><strong>Fecha:</strong> ${new Date(pedido.fechaPedido).toLocaleDateString('es-ES')}</p>
+                            </div>
+                            <div class="info-entrega">
+                                <p>📞 Te contactaremos pronto para coordinar la entrega</p>
+                                <p>📧 Recibirás un email con los detalles del pedido</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-primario" 
+                                onclick="this.closest('.modal-overlay').remove(); location.reload();">
+                            Continuar Comprando 🛍️
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // Función para mostrar notificaciones
+        function mostrarNotificacion(mensaje, tipo = 'info') {
+            const notif = document.createElement('div');
+            notif.className = `notificacion ${tipo}`;
+            notif.innerHTML = `
+                <i class="fas fa-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : tipo === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                ${mensaje}
+            `;
+            
+            notif.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                max-width: 400px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                animation: slideInRight 0.3s ease;
+                ${tipo === 'success' ? 'background: #27ae60;' : ''}
+                ${tipo === 'error' ? 'background: #e74c3c;' : ''}
+                ${tipo === 'warning' ? 'background: #f39c12;' : ''}
+                ${tipo === 'info' ? 'background: #3498db;' : ''}
+            `;
+            
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (document.body.contains(notif)) {
+                        document.body.removeChild(notif);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Ejecutar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Página cargada, inicializando...');
+            updateUserButtons();
+            cargarProductos();
+            cargarBannerDinamico();
+            cargarCarrito();
+            
+            setInterval(updateUserButtons, 30000);
+        });
+
+        // Sincronizar carrito cuando cambie el estado del usuario
+        const originalUpdateUserButtons = updateUserButtons;
+        updateUserButtons = async function() {
+            const estadoAnterior = currentUserState?.isLoggedIn;
+            await originalUpdateUserButtons();
+            const estadoActual = currentUserState?.isLoggedIn;
+            
+            if (!estadoAnterior && estadoActual) {
+                console.log('🔄 Usuario logueado, sincronizando carrito...');
+                await sincronizarCarrito();
+            }
+        };
+
+        // Exponer funciones de debug globalmente
         window.checkUserState = checkUserState;
         window.updateUserButtons = updateUserButtons;
     </script>

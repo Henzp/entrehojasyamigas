@@ -112,6 +112,21 @@ app.use(session({
     }
 }));
 
+// ✅ MIDDLEWARES DE AUTENTICACIÓN
+function requireAuth(req, res, next) {
+    if (!req.session || !req.session.userId) {
+        return res.status(401).json({ error: 'Acceso no autorizado. Debes iniciar sesión.' });
+    }
+    next();
+}
+
+function requireAdmin(req, res, next) {
+    if (!req.session || !req.session.userId || !req.session.isAdmin) {
+        return res.status(403).json({ error: 'Acceso de administrador requerido' });
+    }
+    next();
+}
+
 // ✅ CONFIGURACIÓN DE CLOUDINARY
 try {
     cloudinary.config({
@@ -273,6 +288,69 @@ const tipSchema = new mongoose.Schema({
     fechaActualizacion: { type: Date, default: Date.now }
 });
 
+// ✅ ESQUEMA DE PEDIDOS - AGREGAR DESPUÉS DEL tipSchema
+const pedidoSchema = new mongoose.Schema({
+    usuarioId: { 
+        type: String, 
+        required: true,
+        index: true 
+    },
+    numeroPedido: { 
+        type: String, 
+        unique: true,
+        required: true 
+    },
+    items: [{
+        productoId: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Producto', 
+            required: true 
+        },
+        nombre: { type: String, required: true },
+        precio: { type: Number, required: true },
+        cantidad: { type: Number, required: true },
+        subtotal: { type: Number, required: true },
+        imagen: String
+    }],
+    total: { 
+        type: Number, 
+        required: true,
+        min: 0 
+    },
+    estado: { 
+        type: String, 
+        enum: ['pendiente', 'procesando', 'enviado', 'entregado', 'cancelado'],
+        default: 'pendiente'
+    },
+    datosEntrega: {
+        nombre: { type: String, required: true },
+        telefono: { type: String, required: true },
+        direccion: { type: String, required: true },
+        ciudad: { type: String, required: true },
+        codigoPostal: String,
+        notas: String
+    },
+    metodoPago: {
+        type: String,
+        enum: ['efectivo', 'transferencia', 'tarjeta'],
+        default: 'efectivo'
+    },
+    fechaPedido: { 
+        type: Date, 
+        default: Date.now 
+    },
+    fechaEntrega: Date,
+    activo: { 
+        type: Boolean, 
+        default: true 
+    }
+});
+
+// Índices para búsquedas rápidas de pedidos
+pedidoSchema.index({ usuarioId: 1, fechaPedido: -1 });
+pedidoSchema.index({ numeroPedido: 1 });
+pedidoSchema.index({ estado: 1 });
+
 // ✅ ÍNDICES PARA MEJOR RENDIMIENTO
 carritoSchema.index({ usuarioId: 1 });
 tipSchema.index({ categoria: 1, activo: 1 });
@@ -285,6 +363,7 @@ const Producto = mongoose.model('Producto', productoSchema);
 const Banner = mongoose.model('Banner', bannerSchema);
 const Carrito = mongoose.model('Carrito', carritoSchema);
 const Tip = mongoose.model('Tip', tipSchema);
+const Pedido = mongoose.model('Pedido', pedidoSchema);
 
 // ===============================================
 // ✅ RUTAS PARA SERVIR PÁGINAS HTML
@@ -1064,6 +1143,267 @@ app.get('/api/tips/stats/dashboard', async (req, res) => {
     } catch (error) {
         console.error('Error obteniendo estadísticas de tips:', error);
         res.json({ total: 0, activos: 0, inactivos: 0, porCategoria: {} });
+    }
+});
+
+// ===============================================
+// ✅ API DE PEDIDOS
+// ===============================================
+
+// Función para generar número de pedido único
+function generarNumeroPedido() {
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `PED-${timestamp}-${random}`;
+}
+
+// Procesar compra y crear pedido
+app.post('/api/pedidos/procesar', async (req, res) => {
+    try {
+        const { datosEntrega, metodoPago } = req.body;
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        console.log('🛒 Procesando pedido para usuario:', usuarioId);
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        // Validar datos de entrega
+        if (!datosEntrega || !datosEntrega.nombre || !datosEntrega.telefono || !datosEntrega.direccion || !datosEntrega.ciudad) {
+            return res.status(400).json({ error: 'Datos de entrega incompletos' });
+        }
+        
+        // Obtener carrito actual
+        const carrito = await Carrito.findOne({ usuarioId });
+        if (!carrito || carrito.items.length === 0) {
+            return res.status(400).json({ error: 'El carrito está vacío' });
+        }
+        
+        // Validar stock y calcular total
+        let totalCalculado = 0;
+        const itemsValidados = [];
+        
+        for (const item of carrito.items) {
+            const producto = await Producto.findById(item.productoId);
+            
+            if (!producto) {
+                return res.status(400).json({ error: `Producto ${item.nombre} no encontrado` });
+            }
+            
+            if (!producto.activo) {
+                return res.status(400).json({ error: `Producto ${item.nombre} no está disponible` });
+            }
+            
+            if (producto.stock < item.cantidad) {
+                return res.status(400).json({ 
+                    error: `Stock insuficiente para ${item.nombre}. Disponible: ${producto.stock}, Solicitado: ${item.cantidad}` 
+                });
+            }
+            
+            const subtotal = producto.precio * item.cantidad;
+            totalCalculado += subtotal;
+            
+            itemsValidados.push({
+                productoId: item.productoId,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                cantidad: item.cantidad,
+                subtotal: subtotal,
+                imagen: item.imagen || producto.imagenes[0] || ''
+            });
+        }
+        
+        // Crear pedido
+        const numeroPedido = generarNumeroPedido();
+        
+        const nuevoPedido = new Pedido({
+            usuarioId,
+            numeroPedido,
+            items: itemsValidados,
+            total: totalCalculado,
+            datosEntrega: {
+                nombre: datosEntrega.nombre.trim(),
+                telefono: datosEntrega.telefono.trim(),
+                direccion: datosEntrega.direccion.trim(),
+                ciudad: datosEntrega.ciudad.trim(),
+                codigoPostal: datosEntrega.codigoPostal?.trim() || '',
+                notas: datosEntrega.notas?.trim() || ''
+            },
+            metodoPago: metodoPago || 'efectivo',
+            estado: 'pendiente'
+        });
+        
+        // Guardar pedido
+        await nuevoPedido.save();
+        
+        // Actualizar stock de productos
+        for (const item of itemsValidados) {
+            await Producto.findByIdAndUpdate(
+                item.productoId,
+                { $inc: { stock: -item.cantidad } },
+                { new: true }
+            );
+        }
+        
+        // Limpiar carrito
+        await Carrito.findOneAndUpdate(
+            { usuarioId },
+            { 
+                items: [],
+                total: 0,
+                fechaActualizacion: new Date()
+            }
+        );
+        
+        console.log('✅ Pedido creado exitosamente:', numeroPedido);
+        
+        res.json({
+            success: true,
+            message: 'Pedido procesado exitosamente',
+            pedido: {
+                numeroPedido: numeroPedido,
+                total: totalCalculado,
+                fechaPedido: nuevoPedido.fechaPedido,
+                estado: nuevoPedido.estado
+            }
+        });
+        
+    } catch (error) {
+        console.error('❌ Error procesando pedido:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+});
+
+// Obtener pedidos del usuario
+app.get('/api/pedidos', async (req, res) => {
+    try {
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.json([]);
+        }
+        
+        const pedidos = await Pedido.find({ usuarioId, activo: true })
+            .sort({ fechaPedido: -1 })
+            .select('-__v')
+            .lean();
+        
+        res.json(pedidos);
+        
+    } catch (error) {
+        console.error('Error obteniendo pedidos:', error);
+        res.json([]);
+    }
+});
+
+// Obtener pedido específico
+app.get('/api/pedidos/:numeroPedido', async (req, res) => {
+    try {
+        const { numeroPedido } = req.params;
+        let usuarioId = req.session?.userId || req.headers['x-session-id'] || 'anonimo';
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        const pedido = await Pedido.findOne({ 
+            numeroPedido: numeroPedido,
+            usuarioId,
+            activo: true 
+        }).lean();
+        
+        if (!pedido) {
+            return res.status(404).json({ error: 'Pedido no encontrado' });
+        }
+        
+        res.json(pedido);
+        
+    } catch (error) {
+        console.error('Error obteniendo pedido:', error);
+        res.status(500).json({ error: 'Error obteniendo pedido' });
+    }
+});
+
+// Obtener todos los pedidos (solo admin)
+app.get('/api/admin/pedidos', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        if (mongoose.connection.readyState !== 1) {
+            return res.json([]);
+        }
+        
+        const { estado, fecha, limite = 50 } = req.query;
+        let filtros = { activo: true };
+        
+        if (estado && estado !== 'todos') {
+            filtros.estado = estado;
+        }
+        
+        if (fecha) {
+            const fechaInicio = new Date(fecha);
+            const fechaFin = new Date(fecha);
+            fechaFin.setDate(fechaFin.getDate() + 1);
+            
+            filtros.fechaPedido = {
+                $gte: fechaInicio,
+                $lt: fechaFin
+            };
+        }
+        
+        const pedidos = await Pedido.find(filtros)
+            .sort({ fechaPedido: -1 })
+            .limit(parseInt(limite))
+            .select('-__v')
+            .lean();
+        
+        res.json(pedidos);
+        
+    } catch (error) {
+        console.error('Error obteniendo pedidos admin:', error);
+        res.status(500).json({ error: 'Error obteniendo pedidos' });
+    }
+});
+
+// Cambiar estado de pedido (solo admin)
+app.put('/api/admin/pedidos/:id/estado', requireAuth, requireAdmin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { estado } = req.body;
+        
+        const estadosValidos = ['pendiente', 'procesando', 'enviado', 'entregado', 'cancelado'];
+        
+        if (!estadosValidos.includes(estado)) {
+            return res.status(400).json({ error: 'Estado no válido' });
+        }
+        
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(503).json({ error: 'Base de datos no disponible' });
+        }
+        
+        // Si el estado es 'entregado', actualizar también fechaEntrega
+        const actualizacion = { estado };
+        if (estado === 'entregado') {
+            actualizacion.fechaEntrega = new Date();
+        }
+        
+        const pedidoActualizado = await Pedido.findByIdAndUpdate(
+            id,
+            actualizacion,
+            { new: true }
+        );
+        
+        if (!pedidoActualizado) {
+            return res.status(404).json({ error: 'Pedido no encontrado' });
+        }
+        
+        res.json({
+            message: 'Estado del pedido actualizado exitosamente',
+            pedido: pedidoActualizado
+        });
+        
+    } catch (error) {
+        console.error('Error actualizando estado del pedido:', error);
+        res.status(500).json({ error: 'Error actualizando pedido' });
     }
 });
 
