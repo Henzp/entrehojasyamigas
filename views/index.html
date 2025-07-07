@@ -123,6 +123,7 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            line-clamp: 3;
         }
 
         .producto-precio {
@@ -724,6 +725,57 @@
             font-weight: 600;
         }
 
+        /* ✅ NUEVOS ESTILOS PARA INPUT DE CANTIDAD */
+        .cantidad-input {
+            width: 60px;
+            height: 35px;
+            text-align: center;
+            border: 2px solid #e8f5e8;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #2d5016;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .cantidad-input:focus {
+            outline: none;
+            border-color: #2d5016;
+            box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+        }
+
+        .cantidad-input:disabled {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        /* ✅ ESTILOS PARA INFORMACIÓN DE STOCK */
+        .stock-info {
+            margin: 0;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .stock-info.sin-stock {
+            color: #e74c3c;
+        }
+
+        .stock-info.poco-stock {
+            color: #f39c12;
+        }
+
+        .btn-cantidad:disabled {
+            background: #f5f5f5;
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #eee;
+        }
+
+        .btn-cantidad:disabled:hover {
+            background: #f5f5f5;
+        }
+
         .item-subtotal {
             font-weight: 600;
             color: #2d5016;
@@ -830,6 +882,12 @@
             .btn-primario, .btn-secundario {
                 width: 100%;
             }
+
+            .cantidad-input {
+                width: 50px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -864,6 +922,11 @@
             .item-imagen img {
                 width: 40px;
                 height: 40px;
+            }
+
+            .cantidad-input {
+                width: 45px;
+                height: 28px;
             }
         }
     </style>
@@ -1411,14 +1474,14 @@
             }
         }
 
-        // Actualizar contenido visual del carrito
-        function actualizarCarritoUI() {
+        // ✅ PASO 1: NUEVA FUNCIÓN actualizarCarritoUI() - REEMPLAZAR LA EXISTENTE
+        async function actualizarCarritoUI() {
             const carritoItems = document.getElementById('carritoItems');
             const carritoTotal = document.getElementById('carritoTotal');
             
             if (!carritoItems || !carritoTotal) return;
             
-            if (carritoData.items.length === 0) {
+            if (!carritoData || carritoData.items.length === 0) {
                 carritoItems.innerHTML = `
                     <div class="carrito-vacio">
                         <i class="fas fa-leaf"></i>
@@ -1426,39 +1489,183 @@
                         <small>¡Agrega algunas plantas hermosas!</small>
                     </div>
                 `;
-            } else {
-                carritoItems.innerHTML = carritoData.items.map(item => `
+                carritoTotal.textContent = '0';
+                actualizarContadorCarrito();
+                return;
+            }
+            
+            // Obtener stock actual de todos los productos en el carrito
+            const productosStock = await obtenerStockProductos(carritoData.items.map(item => item.productoId));
+            
+            carritoItems.innerHTML = carritoData.items.map(item => {
+                const stockDisponible = productosStock[item.productoId] || 0;
+                const cantidadLimitada = Math.min(item.cantidad, stockDisponible);
+                
+                // Si la cantidad en el carrito es mayor al stock, actualizar automáticamente
+                if (item.cantidad > stockDisponible && stockDisponible > 0) {
+                    item.cantidad = stockDisponible;
+                }
+                
+                return `
                     <div class="carrito-item" data-producto-id="${item.productoId}">
                         <div class="item-imagen">
-                            <img src="${item.imagen || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=80'}" 
-                                 alt="${item.nombre}">
+                            <img src="${item.imagen || '/images/default-plant.jpg'}" 
+                                 alt="${item.nombre}" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=80'">
                         </div>
                         <div class="item-info">
                             <h4>${item.nombre}</h4>
-                            <p class="item-precio">$${formatearPrecio(item.precio)}</p>
+                            <p class="item-precio">$${formatearPrecio(item.precio)} c/u</p>
+                            <p class="stock-info ${stockDisponible === 0 ? 'sin-stock' : stockDisponible <= 5 ? 'poco-stock' : ''}">
+                                ${stockDisponible === 0 ? '⚠️ Sin stock' : 
+                                  stockDisponible <= 5 ? `⚠️ Solo ${stockDisponible} disponibles` : 
+                                  `✅ ${stockDisponible} disponibles`}
+                            </p>
                         </div>
                         <div class="item-cantidad">
-                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', -1)">-</button>
-                            <span class="cantidad">${item.cantidad}</span>
-                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', 1)">+</button>
+                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', ${item.cantidad - 1}, ${stockDisponible})" 
+                                    ${item.cantidad <= 1 || stockDisponible === 0 ? 'disabled' : ''}>-</button>
+                            <input type="number" 
+                                   class="cantidad-input" 
+                                   value="${cantidadLimitada}" 
+                                   min="1" 
+                                   max="${stockDisponible}"
+                                   data-producto-id="${item.productoId}"
+                                   data-stock="${stockDisponible}"
+                                   onchange="validarYActualizarCantidad(this)"
+                                   onblur="validarYActualizarCantidad(this)"
+                                   ${stockDisponible === 0 ? 'disabled' : ''}>
+                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', ${item.cantidad + 1}, ${stockDisponible})" 
+                                    ${item.cantidad >= stockDisponible || stockDisponible === 0 ? 'disabled' : ''}>+</button>
                         </div>
                         <div class="item-subtotal">
-                            $${formatearPrecio(item.precio * item.cantidad)}
+                            $${formatearPrecio(item.precio * cantidadLimitada)}
                         </div>
                         <button class="btn-eliminar" onclick="eliminarDelCarrito('${item.productoId}')" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
-                `).join('');
-            }
+                `;
+            }).join('');
             
+            // Recalcular total con cantidades actualizadas
+            carritoData.total = carritoData.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
             carritoTotal.textContent = formatearPrecio(carritoData.total);
             actualizarContadorCarrito();
+            
+            // Guardar cambios si hubo correcciones de stock
+            guardarCarritoLocal(carritoData);
         }
 
-        // Cargar carrito al inicializar
+        // ✅ FUNCIÓN CORREGIDA: obtenerStockProductos()
+        async function obtenerStockProductos(productosIds) {
+            try {
+                // ✅ USAR LA API QUE SÍ EXISTE
+                const response = await fetch('/api/productos');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const productos = await response.json();
+                const stockMap = {};
+                productos.forEach(producto => {
+                    if (productosIds.includes(producto._id)) {
+                        stockMap[producto._id] = producto.stock;
+                    }
+                });
+                return stockMap;
+            } catch (error) {
+                console.error('Error obteniendo stock:', error);
+                // Fallback: permitir operación
+                const stockMap = {};
+                productosIds.forEach(id => {
+                    stockMap[id] = 999;
+                });
+                return stockMap;
+            }
+        }
+
+        // Función para validar y actualizar cantidad desde input manual
+        async function validarYActualizarCantidad(inputElement) {
+            const productoId = inputElement.dataset.productoId;
+            const stockDisponible = parseInt(inputElement.dataset.stock);
+            let nuevaCantidad = parseInt(inputElement.value);
+            
+            // Validaciones
+            if (isNaN(nuevaCantidad) || nuevaCantidad < 1) {
+                nuevaCantidad = 1;
+            }
+            
+            if (nuevaCantidad > stockDisponible) {
+                nuevaCantidad = stockDisponible;
+                mostrarNotificacion(`Solo hay ${stockDisponible} unidades disponibles`, 'warning');
+            }
+            
+            // Actualizar el input con el valor corregido
+            inputElement.value = nuevaCantidad;
+            
+            // Actualizar en el carrito
+            await cambiarCantidadCarrito(productoId, nuevaCantidad, stockDisponible, true);
+        }
+
+        // ✅ PASO 4: MEJORAR FUNCIÓN cambiarCantidadCarrito() - REEMPLAZAR LA EXISTENTE
+        async function cambiarCantidadCarrito(productoId, nuevaCantidad, stockDisponible, esCambioDirecto = false) {
+            const item = carritoData.items.find(item => item.productoId === productoId);
+            if (!item) return;
+            
+            // Si no se especifica nueva cantidad, usar la cantidad actual del item
+            if (!esCambioDirecto) {
+                nuevaCantidad = nuevaCantidad;
+            }
+            
+            // Validaciones
+            if (nuevaCantidad <= 0) {
+                eliminarDelCarrito(productoId);
+                return;
+            }
+            
+            if (nuevaCantidad > stockDisponible) {
+                mostrarNotificacion(`Solo hay ${stockDisponible} unidades disponibles`, 'warning');
+                nuevaCantidad = stockDisponible;
+            }
+            
+            try {
+                const headers = { 'Content-Type': 'application/json' };
+                if (!currentUserState?.isLoggedIn) {
+                    headers['X-Session-Id'] = getSessionId();
+                }
+                
+                const response = await fetch(`/api/carrito/actualizar/${productoId}`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify({ cantidad: nuevaCantidad })
+                });
+                
+                if (response.ok) {
+                    const resultado = await response.json();
+                    carritoData = resultado.carrito;
+                    guardarCarritoLocal(carritoData);
+                    await actualizarCarritoUI();
+                } else {
+                    throw new Error('Error en servidor');
+                }
+                
+            } catch (error) {
+                console.error('Error actualizando cantidad:', error);
+                
+                // Fallback: actualizar localmente
+                item.cantidad = nuevaCantidad;
+                carritoData.total = calcularTotal(carritoData.items);
+                guardarCarritoLocal(carritoData);
+                await actualizarCarritoUI();
+            }
+        }
+
+        // ✅ PASO 5: FUNCIÓN cargarCarrito() MEJORADA - REEMPLAZAR LA EXISTENTE
         async function cargarCarrito() {
             try {
+                // Primero intentar cargar desde la base de datos
                 const headers = {};
                 if (!currentUserState?.isLoggedIn) {
                     headers['X-Session-Id'] = getSessionId();
@@ -1471,53 +1678,118 @@
                     if (carritoServidor.items.length > 0) {
                         carritoData = carritoServidor;
                         guardarCarritoLocal(carritoData);
-                        actualizarCarritoUI();
+                        
+                        // Validar stock después de cargar desde servidor
+                        await validarStockCarrito();
                         return;
                     }
                 }
                 
+                // Si no hay datos en el servidor, cargar desde localStorage
                 carritoData = cargarCarritoLocal();
-                actualizarCarritoUI();
+                
+                // Validar stock del localStorage
+                if (carritoData.items.length > 0) {
+                    await validarStockCarrito();
+                } else {
+                    await actualizarCarritoUI();
+                }
                 
             } catch (error) {
                 console.error('Error cargando carrito:', error);
                 carritoData = cargarCarritoLocal();
-                actualizarCarritoUI();
+                await actualizarCarritoUI();
             }
         }
 
-        // Sincronizar carrito con servidor
-        async function sincronizarCarrito() {
-            if (!currentUserState?.isLoggedIn) return;
+        // ✅ NUEVA FUNCIÓN PARA VALIDAR STOCK DEL CARRITO AL CARGAR
+        async function validarStockCarrito() {
+            if (!carritoData || carritoData.items.length === 0) {
+                await actualizarCarritoUI();
+                return;
+            }
             
             try {
-                const carritoLocal = cargarCarritoLocal();
-                if (carritoLocal.items.length === 0) return;
+                const productosIds = carritoData.items.map(item => item.productoId);
+                const stockMap = await obtenerStockProductos(productosIds);
                 
-                const response = await fetch('/api/carrito/sincronizar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ items: carritoLocal.items })
+                let huboCambios = false;
+                let productosEliminados = [];
+                let cantidadesAjustadas = [];
+                
+                // Revisar cada item del carrito
+                carritoData.items = carritoData.items.filter(item => {
+                    const stockDisponible = stockMap[item.productoId] || 0;
+                    
+                    // Si no hay stock, eliminar del carrito
+                    if (stockDisponible === 0) {
+                        productosEliminados.push(item.nombre);
+                        huboCambios = true;
+                        return false;
+                    }
+                    
+                    // Si la cantidad excede el stock, ajustar
+                    if (item.cantidad > stockDisponible) {
+                        cantidadesAjustadas.push({
+                            nombre: item.nombre,
+                            cantidadAnterior: item.cantidad,
+                            cantidadNueva: stockDisponible
+                        });
+                        item.cantidad = stockDisponible;
+                        huboCambios = true;
+                    }
+                    
+                    return true;
                 });
                 
-                if (response.ok) {
-                    const resultado = await response.json();
-                    carritoData = resultado.carrito;
+                if (huboCambios) {
+                    // Recalcular total
+                    carritoData.total = carritoData.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+                    
+                    // Guardar cambios
                     guardarCarritoLocal(carritoData);
-                    actualizarCarritoUI();
-                    console.log('✅ Carrito sincronizado con servidor');
+                    
+                    // Mostrar notificaciones sobre los cambios
+                    if (productosEliminados.length > 0) {
+                        mostrarNotificacion(`❌ Productos eliminados del carrito (sin stock): ${productosEliminados.join(', ')}`, 'warning');
+                    }
+                    
+                    if (cantidadesAjustadas.length > 0) {
+                        const mensajes = cantidadesAjustadas.map(item => 
+                            `${item.nombre}: ${item.cantidadAnterior} → ${item.cantidadNueva}`
+                        );
+                        mostrarNotificacion(`⚠️ Cantidades ajustadas por stock limitado:\n${mensajes.join('\n')}`, 'warning');
+                    }
                 }
+                
+                await actualizarCarritoUI();
+                
             } catch (error) {
-                console.error('Error sincronizando carrito:', error);
+                console.error('Error validando stock del carrito:', error);
+                await actualizarCarritoUI();
             }
         }
 
-        // Agregar producto al carrito
+        // ✅ PASO 4: FUNCIÓN agregarAlCarrito() MEJORADA - REEMPLAZAR LA EXISTENTE
         async function agregarAlCarrito(productoId) {
             try {
                 console.log('🛒 Agregando al carrito:', productoId);
+                
+                // Obtener stock actual del producto antes de agregar
+                const stockActual = await obtenerStockProductos([productoId]);
+                const stockDisponible = stockActual[productoId] || 0;
+                
+                if (stockDisponible <= 0) {
+                    mostrarNotificacion('❌ Este producto está agotado', 'error');
+                    return;
+                }
+                
+                // Verificar si ya está en el carrito y validar límite
+                const itemExistente = carritoData.items.find(item => item.productoId === productoId);
+                if (itemExistente && itemExistente.cantidad >= stockDisponible) {
+                    mostrarNotificacion(`⚠️ Ya tienes el máximo disponible (${stockDisponible}) de este producto`, 'warning');
+                    return;
+                }
                 
                 const btnElement = event?.target?.closest('.btn-agregar');
                 if (btnElement) {
@@ -1549,7 +1821,7 @@
                     const resultado = await response.json();
                     carritoData = resultado.carrito;
                     guardarCarritoLocal(carritoData);
-                    actualizarCarritoUI();
+                    await actualizarCarritoUI();
                     
                     mostrarNotificacion('¡Producto agregado al carrito! 🌱', 'success');
                 } else {
@@ -1584,55 +1856,13 @@
                         carritoLocal.total = calcularTotal(carritoLocal.items);
                         carritoData = carritoLocal;
                         guardarCarritoLocal(carritoData);
-                        actualizarCarritoUI();
+                        await actualizarCarritoUI();
                         
                         mostrarNotificacion('Producto agregado al carrito (modo offline) 📦', 'success');
                     }
                 } catch (fallbackError) {
                     mostrarNotificacion('Error al agregar producto al carrito', 'error');
                 }
-            }
-        }
-
-        // Cambiar cantidad de producto en carrito
-        async function cambiarCantidadCarrito(productoId, cambio) {
-            const item = carritoData.items.find(item => item.productoId === productoId);
-            if (!item) return;
-            
-            const nuevaCantidad = item.cantidad + cambio;
-            if (nuevaCantidad <= 0) {
-                eliminarDelCarrito(productoId);
-                return;
-            }
-            
-            try {
-                const headers = { 'Content-Type': 'application/json' };
-                if (!currentUserState?.isLoggedIn) {
-                    headers['X-Session-Id'] = getSessionId();
-                }
-                
-                const response = await fetch(`/api/carrito/actualizar/${productoId}`, {
-                    method: 'PUT',
-                    headers,
-                    body: JSON.stringify({ cantidad: nuevaCantidad })
-                });
-                
-                if (response.ok) {
-                    const resultado = await response.json();
-                    carritoData = resultado.carrito;
-                    guardarCarritoLocal(carritoData);
-                    actualizarCarritoUI();
-                } else {
-                    throw new Error('Error en servidor');
-                }
-                
-            } catch (error) {
-                console.error('Error actualizando cantidad:', error);
-                
-                item.cantidad = nuevaCantidad;
-                carritoData.total = calcularTotal(carritoData.items);
-                guardarCarritoLocal(carritoData);
-                actualizarCarritoUI();
             }
         }
 
@@ -1653,7 +1883,7 @@
                     const resultado = await response.json();
                     carritoData = resultado.carrito;
                     guardarCarritoLocal(carritoData);
-                    actualizarCarritoUI();
+                    await actualizarCarritoUI();
                     mostrarNotificacion('Producto eliminado del carrito', 'info');
                 } else {
                     throw new Error('Error en servidor');
@@ -1665,7 +1895,7 @@
                 carritoData.items = carritoData.items.filter(item => item.productoId !== productoId);
                 carritoData.total = calcularTotal(carritoData.items);
                 guardarCarritoLocal(carritoData);
-                actualizarCarritoUI();
+                await actualizarCarritoUI();
                 mostrarNotificacion('Producto eliminado del carrito', 'info');
             }
         }
@@ -1685,6 +1915,34 @@
             } else {
                 sidebar.classList.add('active');
                 overlay.classList.add('active');
+            }
+        }
+
+        // Cargar carrito al inicializar
+        async function sincronizarCarrito() {
+            if (!currentUserState?.isLoggedIn) return;
+            
+            try {
+                const carritoLocal = cargarCarritoLocal();
+                if (carritoLocal.items.length === 0) return;
+                
+                const response = await fetch('/api/carrito/sincronizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ items: carritoLocal.items })
+                });
+                
+                if (response.ok) {
+                    const resultado = await response.json();
+                    carritoData = resultado.carrito;
+                    guardarCarritoLocal(carritoData);
+                    await actualizarCarritoUI();
+                    console.log('✅ Carrito sincronizado con servidor');
+                }
+            } catch (error) {
+                console.error('Error sincronizando carrito:', error);
             }
         }
 
@@ -1844,7 +2102,7 @@
                 if (response.ok && resultado.success) {
                     carritoData = { items: [], total: 0 };
                     guardarCarritoLocal(carritoData);
-                    actualizarCarritoUI();
+                    await actualizarCarritoUI();
                     
                     document.querySelector('.modal-overlay').remove();
                     
