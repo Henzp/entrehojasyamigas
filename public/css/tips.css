@@ -1,0 +1,478 @@
+/* ===============================================
+   TIPS.CSS - ESTILOS PARA PÁGINA DE TIPS
+   =============================================== */
+
+/* ESTILOS ESPECÍFICOS PARA TIPS */
+.tips-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 140px 20px 60px;
+    min-height: 100vh;
+}
+
+.tips-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.tips-header h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: #2d5016;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(45, 80, 22, 0.1);
+}
+
+.tips-header p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* FILTROS */
+.tips-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: #f8fff8;
+    border-radius: 20px;
+    border: 2px solid #e8f5e8;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: #2d5016;
+    font-size: 0.9rem;
+}
+
+.filter-select {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #2d5016;
+    box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+}
+
+.filter-select:hover {
+    border-color: #4a7c59;
+}
+
+/* GRID DE TIPS */
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.tip-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.tip-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    border-color: #90ee90;
+}
+
+.tip-image {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.tip-difficulty {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.tip-difficulty.facil { background: rgba(39, 174, 96, 0.9); }
+.tip-difficulty.intermedio { background: rgba(243, 156, 18, 0.9); }
+.tip-difficulty.avanzado { background: rgba(231, 76, 60, 0.9); }
+
+.tip-category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2d5016;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.tip-content {
+    padding: 1.5rem;
+}
+
+.tip-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #2d5016;
+    margin-bottom: 0.8rem;
+    text-shadow: 1px 1px 2px rgba(45, 80, 22, 0.1);
+    line-height: 1.3;
+}
+
+.tip-excerpt {
+    font-family: 'Inter', sans-serif;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.tip-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.tip-author {
+    font-family: 'Inter', sans-serif;
+    color: #888;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.tip-date {
+    font-family: 'Inter', sans-serif;
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.tip-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tip-tag {
+    background: #e8f5e8;
+    color: #2d5016;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid #d4f4d4;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    animation: slideIn 0.3s ease;
+    position: relative;
+}
+
+.modal-header {
+    padding: 2rem 2rem 0 2rem;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #666;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: #f0f0f0;
+    color: #333;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 0 2rem 2rem 2rem;
+}
+
+.modal-tip-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.modal-tip-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: #2d5016;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 2px rgba(45, 80, 22, 0.1);
+}
+
+.modal-tip-meta {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.modal-tip-category,
+.modal-tip-difficulty,
+.modal-tip-author,
+.modal-tip-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+}
+
+.modal-tip-content {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.8;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.modal-tip-content h3 {
+    font-family: 'Dancing Script', cursive;
+    color: #2d5016;
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem 0;
+}
+
+.modal-tip-content p {
+    margin-bottom: 1.5rem;
+}
+
+.modal-tip-content ul,
+.modal-tip-content ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+}
+
+.modal-tip-content li {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+/* LOADING Y ESTADOS VACÍOS */
+.loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem;
+    color: #666;
+}
+
+.loading i {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: #2d5016;
+    animation: pulse 2s infinite;
+}
+
+.no-tips {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem;
+    color: #666;
+}
+
+.no-tips i {
+    font-size: 4rem;
+    color: #2d5016;
+    margin-bottom: 2rem;
+    opacity: 0.3;
+}
+
+.no-tips h3 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #2d5016;
+    margin-bottom: 1rem;
+}
+
+/* BOTÓN VOLVER */
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #6c757d;
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.btn-volver:hover {
+    background: #545b62;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .tips-container {
+        padding: 100px 15px 40px;
+    }
+
+    .tips-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .tips-filters {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .filter-group {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .tips-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .tip-card {
+        margin: 0 auto;
+        max-width: 400px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+
+    .modal-header {
+        padding: 1.5rem;
+    }
+
+    .modal-body {
+        padding: 0 1.5rem 1.5rem;
+    }
+
+    .modal-tip-title {
+        font-size: 2rem;
+    }
+
+    .modal-tip-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ESTILOS PARA BOTONES DINÁMICOS DEL HEADER */
+.user-actions-container {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.login-btn-small, .user-profile-btn, .admin-btn-small, .logout-btn-small, .user-name-small, .loading-user {
+    /* Usar los mismos estilos del index */
+}
