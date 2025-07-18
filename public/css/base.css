@@ -1,0 +1,102 @@
+/* ✅ CSS BASE - Variables, Reset y Fuentes */
+
+/* AGREGAR AL INICIO DEL ARCHIVO - Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Pacifico&family=Great+Vibes&family=Satisfy&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ✅ Utilidades adicionales de compatibilidad */
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* ✅ Soporte para navegadores antiguos */
+.flex-fallback {
+    display: table;
+    width: 100%;
+}
+
+.flex-fallback > * {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/* ✅ Grid fallback para IE */
+@supports not (display: grid) {
+    .productos-grid,
+    .categorias-grid,
+    .footer-content {
+        display: block;
+    }
+    
+    .producto-card,
+    .categoria-card,
+    .footer-section {
+        display: inline-block;
+        vertical-align: top;
+        width: calc(33.333% - 1rem);
+        margin: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .producto-card,
+        .categoria-card,
+        .footer-section {
+            width: calc(100% - 1rem);
+        }
+    }
+}
+
+/* ✅ Animaciones con prefijos mejorados */
+@-webkit-keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}

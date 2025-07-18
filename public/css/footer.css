@@ -1,0 +1,86 @@
+/* ✅ CSS FOOTER - Footer */
+
+/* Footer */
+.footer {
+    background: #2d5016;
+    color: white;
+    padding: 3rem 0 1rem;
+}
+
+.footer-content {
+    display: -ms-grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Títulos del footer con fuente cursiva */
+.footer-section h3,
+.footer-section h4 {
+    font-family: 'Dancing Script', cursive;
+    margin-bottom: 1rem;
+    color: #90ee90;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.footer-section p,
+.footer-section a {
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 0.5rem;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    display: block;
+    -webkit-transition: color 0.3s ease;
+    -moz-transition: color 0.3s ease;
+    -ms-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: white;
+}
+
+.social-links {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-radius: 50%;
+    -webkit-transition: background 0.3s ease;
+    -moz-transition: background 0.3s ease;
+    -ms-transition: background 0.3s ease;
+    transition: background 0.3s ease;
+}
+
+.social-links a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6);
+}
