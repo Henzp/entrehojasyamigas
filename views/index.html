@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌱 Entre Hojas y Amigas - Plantas de interior y exterior a domicilio</title>
+
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/index.css">   
+
+    <script>
+        console.log('🌱 Página cargada correctamente');
+    </script>
 </head>
 <body>
     <!-- Header -->
@@ -22,12 +27,10 @@
                     </div>
                     
                     <div class="nav-actions">
-                        <button class="search-btn"><i class="fas fa-search"></i></button>
-                        <button class="cart-btn" onclick="toggleCarrito()">
-                            <i class="fas fa-shopping-cart"></i>
+                        <button class="cart-btn" id="cartBtn">
+                            &#128722;
                             <span class="cart-count" id="cartCount">0</span>
                         </button>
-                        
                         <div id="userActions" class="user-actions-container">
                             <span class="loading-user">Cargando...</span>
                         </div>
@@ -68,12 +71,13 @@
         <div class="hero-content">
             <h1>Plantas de interior y exterior a domicilio</h1>
             <p>Encuentra una gran variedad de plantas de interior y exterior a domicilio. Elige la tuya con macetero autorregante, te asesoramos en el cuidado de las plantas.</p>
-            <button class="cta-button" onclick="document.getElementById('productos').scrollIntoView()">
+            <button class="cta-button" id="ctaButton">
                 Ver Plantas
             </button>
         </div>
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800" alt="Plantas hermosas">
+            <img src="/images/pala.jpg" alt="Plantas hermosas" 
+                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGZiMzY5O3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMxMDk5Njk7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDUlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+8J+MsSDQn9C70LDQvdGC0LAg0YLQvtC90L3QsNGPPC90ZXh0PgogIDx0ZXh0IHg9IjUwJSIgeT0iNjAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+0J/RgNC10LrRgNCw0YHQvdGL0Lkg0LjQvdGC0LXRgNGM0LXRgDwvdGV4dD4KPC9zdmc+'">
         </div>
     </section>
 
@@ -83,7 +87,8 @@
             <h2>Colecciones destacadas</h2>
             <div class="categorias-grid">
                 <div class="categoria-card" data-categoria="Interior Grande">
-                    <img src="https://images.unsplash.com/photo-1493606278519-11aa9a6b8453?w=400" alt="Plantas Grandes">
+                    <img src="/images/plantas-grandes.jpg" alt="Plantas Grandes" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZGllbnQxIiBjeD0iNTAlIiBjeT0iNTAlIiByPSI2MCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMmY3YzQ3O3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMxMzU0MzM7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWRpZW50MSkiLz4KICA8dGV4dCB4PSI1MCUiIHk9IjQ1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjM2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfjbMgUGxhbnRhczwvdGV4dD4KICA8dGV4dCB4PSI1MCUiIHk9IjU1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkdyYW5kZXM8L3RleHQ+Cjwvc3ZnPg=='">
                     <div class="categoria-overlay">
                         <h3>Plantas Grandes</h3>
                         <p>Plantas de interior sobre 1 metro</p>
@@ -92,7 +97,8 @@
                 </div>
                 
                 <div class="categoria-card" data-categoria="Pet Friendly">
-                    <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?w=400" alt="Pet Friendly">
+                    <img src="/images/petfriendly.jpg" alt="Pet Friendly" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQyIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzQ4Y2M2ZTtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMmI4ZjViO3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkaWVudDIpIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn5CV8J+QsiBQZXQgRnJpZW5kbHk8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI1NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5TZWd1cmFzIHBhcmEgbWFzY290YXM8L3RleHQ+Cjwvc3ZnPg=='">
                     <div class="categoria-overlay">
                         <h3>Pet Friendly</h3>
                         <p>Plantas que puedes tener con mascotas</p>
@@ -101,7 +107,8 @@
                 </div>
                 
                 <div class="categoria-card" data-categoria="Autorregante">
-                    <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400" alt="Autorregantes">
+                    <img src="/images/autorregantes.jpg" alt="Autorregantes" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQzIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzMwOGNjNjtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWQ2MzlhO3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkaWVudDMpIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn5qwIEF1dG9ycmVnYW50ZXM8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI1NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5NYWNldGVyb3MgaW50ZWxpZ2VudGVzPC90ZXh0Pgo8L3N2Zz4='">
                     <div class="categoria-overlay">
                         <h3>Autorregantes</h3>
                         <p>Maceteros Autorregantes</p>
@@ -110,7 +117,8 @@
                 </div>
                 
                 <div class="categoria-card" data-categoria="Fácil Cuidado">
-                    <img src="https://images.unsplash.com/photo-1509423350716-97f2360af8e4?w=400" alt="Fácil Cuidado">
+                    <img src="/images/facil-cuidado.jpg" alt="Fácil Cuidado" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZGllbnQ0IiBjeD0iNTAlIiBjeT0iNTAlIiByPSI3MCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjM5YzEyO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNkNjhlMDI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWRpZW50NCkiLz4KICA8dGV4dCB4PSI1MCUiIHk9IjQwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjM2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfjZ4gRsOhY2lsIEN1aWRhZG88L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI1NSUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JZGVhbGVzIHBhcmEgY29tZW56YXI8L3RleHQ+Cjwvc3ZnPg=='">
                     <div class="categoria-overlay">
                         <h3>Fácil Cuidado</h3>
                         <p>Ideales para comenzar</p>
@@ -119,7 +127,8 @@
                 </div>
                 
                 <div class="categoria-card" data-categoria="Regalo">
-                    <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400" alt="Para Regalo">
+                    <img src="/images/regalos.jpg" alt="Para Regalo" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQ1IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U3NGMzYztzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYzAzOTJiO3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkaWVudDUpIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI0MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn4qRIFBhcmEgUmVnYWxvPC90ZXh0PgogIDx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29uIG1hY2V0ZXJvIGVzcGVjaWFsPC90ZXh0Pgo8L3N2Zz4='">
                     <div class="categoria-overlay">
                         <h3>Para Regalo</h3>
                         <p>Plantas con Macetero para regalo</p>
@@ -175,7 +184,7 @@
     <div class="carrito-sidebar" id="carritoSidebar">
         <div class="carrito-header">
             <h3><i class="fas fa-shopping-cart"></i> Mi Carrito</h3>
-            <button class="close-carrito" onclick="toggleCarrito()">
+            <button class="close-carrito" id="closeCarritoBtn">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -190,14 +199,14 @@
             <div class="carrito-total">
                 <strong>Total: $<span id="carritoTotal">0</span></strong>
             </div>
-            <button class="btn-comprar-carrito" onclick="procesarCompra()">
+            <button class="btn-comprar-carrito" id="procesarCompraBtn">
                 Procesar Compra
             </button>
         </div>
     </div>
 
     <!-- Overlay -->
-    <div class="overlay" id="overlay" onclick="toggleCarrito()"></div>
+    <div class="overlay" id="overlay"></div>
 
     <!-- Footer -->
     <footer class="footer" id="contacto">
@@ -243,10 +252,11 @@
     </footer>    
 
     <script>
-        // DEBUG: Variable global para ver el estado
+        // ✅ VARIABLES GLOBALES
         let currentUserState = null;
+        let carritoData = { items: [], total: 0 };
 
-        // Función mejorada para verificar estado de sesión
+        // ✅ FUNCIÓN PRINCIPAL: updateUserButtons() - SIN ONCLICK
         async function updateUserButtons() {
             const userActionsContainer = document.getElementById('userActions');
             
@@ -272,10 +282,15 @@
                             <a href="/admin" class="admin-btn-small">
                                 <i class="fas fa-cog"></i> Admin
                             </a>
-                            <button class="logout-btn-small" onclick="logout()" title="Cerrar Sesión">
+                            <button class="logout-btn-small" data-action="logout" title="Cerrar Sesión">
                                 <i class="fas fa-sign-out-alt"></i>
                             </button>
                         `;
+                        // ✅ Agregar event listener después del innerHTML
+                        const logoutBtn = userActionsContainer.querySelector('[data-action="logout"]');
+                        if (logoutBtn) {
+                            logoutBtn.addEventListener('click', logout);
+                        }
                         console.log('✅ UI actualizada para ADMIN');
                     } else {
                         userActionsContainer.innerHTML = `
@@ -283,10 +298,15 @@
                             <a href="/perfil" class="user-profile-btn">
                                 <i class="fas fa-user"></i> Mi Perfil
                             </a>
-                            <button class="logout-btn-small" onclick="logout()" title="Cerrar Sesión">
+                            <button class="logout-btn-small" data-action="logout" title="Cerrar Sesión">
                                 <i class="fas fa-sign-out-alt"></i>
                             </button>
                         `;
+                        // ✅ Agregar event listener después del innerHTML
+                        const logoutBtn = userActionsContainer.querySelector('[data-action="logout"]');
+                        if (logoutBtn) {
+                            logoutBtn.addEventListener('click', logout);
+                        }
                         console.log('✅ UI actualizada para USUARIO');
                     }
                 } else {
@@ -309,7 +329,7 @@
             }
         }
 
-        // Función para cerrar sesión
+        // ✅ FUNCIÓN PARA CERRAR SESIÓN
         async function logout() {
             try {
                 console.log('🚪 Cerrando sesión...');
@@ -330,13 +350,7 @@
             }
         }
 
-        // Función de debugging
-        function checkUserState() {
-            console.log('🔍 Estado actual del usuario:', currentUserState);
-            return currentUserState;
-        }
-
-        // Cargar banner dinámicamente
+        // ✅ CARGAR BANNER DINÁMICO
         async function cargarBannerDinamico() {
             try {
                 const response = await fetch('/api/banner');
@@ -355,7 +369,7 @@
                     <div class="banner-item">
                         <img src="${item.imagen}" 
                              alt="${item.alt}" 
-                             onerror="this.src='https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=200&fit=crop'">
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNGZiMzY5Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5JbWFnZW4gQmFubmVyPC90ZXh0Pgo8L3N2Zz4='">
                     </div>
                 `).join('');
                 
@@ -369,7 +383,7 @@
             }
         }
 
-        // Cargar productos
+        // ✅ CARGAR PRODUCTOS - SIN ONCLICK
         async function cargarProductos() {
             const productosGrid = document.getElementById('productosGrid');
             
@@ -390,7 +404,6 @@
                 
                 productosGrid.innerHTML = productos.map(producto => {
                     const imagenes = producto.imagenes || [];
-                    const imagenPrincipal = imagenes[0] || 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400';
                     
                     let stockInfo = '';
                     if (producto.stock <= 0) {
@@ -403,7 +416,7 @@
                     
                     return `
                         <div class="producto-card" data-categoria="${producto.categoria}">
-                            <div class="producto-images" onclick="verProducto('${producto._id}')" title="Ver detalles de ${producto.nombre}">
+                            <div class="producto-images" data-action="ver-producto" data-producto-id="${producto._id}" title="Ver detalles de ${producto.nombre}">
                                 <div class="categoria-badge">${producto.categoria}</div>
                                 ${stockInfo}
                                 
@@ -411,14 +424,15 @@
                                     <img src="${imagen}" 
                                          alt="${producto.nombre}" 
                                          class="producto-image ${index === 0 ? 'active' : ''}"
-                                         onerror="this.src='https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400'">
+                                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNGZiMzY5Ii8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QbGFudGE8L3RleHQ+Cjwvc3ZnPg=='">
                                 `).join('')}
                                 
                                 ${imagenes.length > 1 ? `
                                     <div class="image-dots">
                                         ${imagenes.map((_, index) => `
                                             <span class="dot ${index === 0 ? 'active' : ''}" 
-                                                  onclick="event.stopPropagation(); cambiarImagen(this, ${index})"
+                                                  data-action="cambiar-imagen" 
+                                                  data-index="${index}"
                                                   title="Imagen ${index + 1}"></span>
                                         `).join('')}
                                     </div>
@@ -427,16 +441,16 @@
                             
                             <div class="producto-info">
                                 <div class="producto-content">
-                                    <h3 class="producto-nombre" onclick="verProducto('${producto._id}')" title="Ver detalles de ${producto.nombre}">${producto.nombre}</h3>
+                                    <h3 class="producto-nombre" data-action="ver-producto" data-producto-id="${producto._id}" title="Ver detalles de ${producto.nombre}">${producto.nombre}</h3>
                                     <p class="producto-descripcion">${producto.descripcion}</p>
                                     <div class="producto-precio">$${formatearPrecio(producto.precio)}</div>
                                 </div>
                                 
                                 <div class="producto-botones">
-                                    <button class="btn-agregar" onclick="agregarAlCarrito('${producto._id}')" ${producto.stock <= 0 ? 'disabled' : ''}>
+                                    <button class="btn-agregar" data-action="agregar-carrito" data-producto-id="${producto._id}" ${producto.stock <= 0 ? 'disabled' : ''}>
                                         <i class="fas fa-cart-plus"></i> ${producto.stock <= 0 ? 'Agotado' : 'Agregar'}
                                     </button>
-                                    <button class="btn-comprar" onclick="verProducto('${producto._id}')">
+                                    <button class="btn-comprar" data-action="ver-producto" data-producto-id="${producto._id}">
                                         <i class="fas fa-eye"></i> Ver más
                                     </button>
                                 </div>
@@ -445,7 +459,9 @@
                     `;
                 }).join('');
                 
-                configurarFiltros(productos);
+                // ✅ AGREGAR EVENT LISTENERS DESPUÉS DEL innerHTML
+                agregarEventListenersProductos();
+                configurarFiltros();
                 
             } catch (error) {
                 console.error('Error cargando productos:', error);
@@ -459,13 +475,45 @@
             }
         }
 
-        // Ir a la página del producto
+        // ✅ NUEVA FUNCIÓN: Agregar event listeners a productos
+        function agregarEventListenersProductos() {
+            const productosGrid = document.getElementById('productosGrid');
+            
+            // Delegación de eventos para botones y elementos
+            productosGrid.addEventListener('click', function(e) {
+                const action = e.target.closest('[data-action]')?.dataset.action;
+                const productoId = e.target.closest('[data-producto-id]')?.dataset.productoId;
+                const index = e.target.dataset.index;
+                
+                switch (action) {
+                    case 'ver-producto':
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (productoId) verProducto(productoId);
+                        break;
+                        
+                    case 'agregar-carrito':
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (productoId) agregarAlCarrito(productoId);
+                        break;
+                        
+                    case 'cambiar-imagen':
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (index !== undefined) cambiarImagen(e.target, parseInt(index));
+                        break;
+                }
+            });
+        }
+
+        // ✅ FUNCIÓN PARA VER PRODUCTO
         function verProducto(productoId) {
             console.log('🔍 Navegando a producto:', productoId);
             window.location.href = `/producto/${productoId}`;
         }
 
-        // Cambiar imagen en el carrusel
+        // ✅ FUNCIÓN PARA CAMBIAR IMAGEN
         function cambiarImagen(dotElement, imageIndex) {
             const card = dotElement.closest('.producto-card');
             const imagenes = card.querySelectorAll('.producto-image');
@@ -478,13 +526,13 @@
             dotElement.classList.add('active');
         }
 
-        // Formatear precios
+        // ✅ FUNCIÓN FORMATEAR PRECIO
         function formatearPrecio(precio) {
             return precio.toLocaleString('es-CL');
         }
 
-        // Configurar filtros
-        function configurarFiltros(productos) {
+        // ✅ CONFIGURAR FILTROS
+        function configurarFiltros() {
             const filtros = document.querySelectorAll('.filtro-btn');
             const cards = document.querySelectorAll('.producto-card');
             
@@ -506,14 +554,7 @@
             });
         }
 
-        // ===============================================
-        // 🛒 SISTEMA DE CARRITO HÍBRIDO COMPLETO
-        // ===============================================
-
-        let carritoData = {
-            items: [],
-            total: 0
-        };
+        // ✅ FUNCIONES DE CARRITO
 
         // Generar sessionId único para usuarios anónimos
         function getSessionId() {
@@ -550,7 +591,7 @@
             }
         }
 
-        // ✅ PASO 1: NUEVA FUNCIÓN actualizarCarritoUI() - REEMPLAZAR LA EXISTENTE
+        // ✅ ACTUALIZAR CARRITO UI - SIN ONCLICK
         async function actualizarCarritoUI() {
             const carritoItems = document.getElementById('carritoItems');
             const carritoTotal = document.getElementById('carritoTotal');
@@ -587,7 +628,7 @@
                         <div class="item-imagen">
                             <img src="${item.imagen || '/images/default-plant.jpg'}" 
                                  alt="${item.nombre}" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=80'">
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzRmYjM2OSIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+UGxhbnRhPC90ZXh0Pgo8L3N2Zz4='">
                         </div>
                         <div class="item-info">
                             <h4>${item.nombre}</h4>
@@ -599,30 +640,32 @@
                             </p>
                         </div>
                         <div class="item-cantidad">
-                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', ${item.cantidad - 1}, ${stockDisponible})" 
+                            <button class="btn-cantidad" data-action="decrementar" data-producto-id="${item.productoId}" data-stock="${stockDisponible}" 
                                     ${item.cantidad <= 1 || stockDisponible === 0 ? 'disabled' : ''}>-</button>
                             <input type="number" 
                                    class="cantidad-input" 
                                    value="${cantidadLimitada}" 
                                    min="1" 
                                    max="${stockDisponible}"
+                                   data-action="cambiar-cantidad"
                                    data-producto-id="${item.productoId}"
                                    data-stock="${stockDisponible}"
-                                   onchange="validarYActualizarCantidad(this)"
-                                   onblur="validarYActualizarCantidad(this)"
                                    ${stockDisponible === 0 ? 'disabled' : ''}>
-                            <button class="btn-cantidad" onclick="cambiarCantidadCarrito('${item.productoId}', ${item.cantidad + 1}, ${stockDisponible})" 
+                            <button class="btn-cantidad" data-action="incrementar" data-producto-id="${item.productoId}" data-stock="${stockDisponible}"
                                     ${item.cantidad >= stockDisponible || stockDisponible === 0 ? 'disabled' : ''}>+</button>
                         </div>
                         <div class="item-subtotal">
                             $${formatearPrecio(item.precio * cantidadLimitada)}
                         </div>
-                        <button class="btn-eliminar" onclick="eliminarDelCarrito('${item.productoId}')" title="Eliminar">
+                        <button class="btn-eliminar" data-action="eliminar" data-producto-id="${item.productoId}" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 `;
             }).join('');
+            
+            // ✅ AGREGAR EVENT LISTENERS AL CARRITO
+            agregarEventListenersCarrito();
             
             // Recalcular total con cantidades actualizadas
             carritoData.total = carritoData.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
@@ -633,10 +676,56 @@
             guardarCarritoLocal(carritoData);
         }
 
-        // ✅ FUNCIÓN CORREGIDA: obtenerStockProductos()
+        // ✅ NUEVA FUNCIÓN: Event listeners para carrito
+        function agregarEventListenersCarrito() {
+            const carritoItems = document.getElementById('carritoItems');
+            
+            carritoItems.addEventListener('click', function(e) {
+                const action = e.target.closest('[data-action]')?.dataset.action;
+                const productoId = e.target.closest('[data-producto-id]')?.dataset.productoId;
+                const stockDisponible = parseInt(e.target.dataset.stock) || 0;
+                
+                switch (action) {
+                    case 'decrementar':
+                        e.preventDefault();
+                        const itemDec = carritoData.items.find(item => item.productoId === productoId);
+                        if (itemDec) {
+                            cambiarCantidadCarrito(productoId, itemDec.cantidad - 1, stockDisponible);
+                        }
+                        break;
+                        
+                    case 'incrementar':
+                        e.preventDefault();
+                        const itemInc = carritoData.items.find(item => item.productoId === productoId);
+                        if (itemInc) {
+                            cambiarCantidadCarrito(productoId, itemInc.cantidad + 1, stockDisponible);
+                        }
+                        break;
+                        
+                    case 'eliminar':
+                        e.preventDefault();
+                        eliminarDelCarrito(productoId);
+                        break;
+                }
+            });
+            
+            // Event listeners para inputs de cantidad
+            carritoItems.addEventListener('change', function(e) {
+                if (e.target.dataset.action === 'cambiar-cantidad') {
+                    validarYActualizarCantidad(e.target);
+                }
+            });
+            
+            carritoItems.addEventListener('blur', function(e) {
+                if (e.target.dataset.action === 'cambiar-cantidad') {
+                    validarYActualizarCantidad(e.target);
+                }
+            });
+        }
+
+        // Obtener stock de productos
         async function obtenerStockProductos(productosIds) {
             try {
-                // ✅ USAR LA API QUE SÍ EXISTE
                 const response = await fetch('/api/productos');
                 
                 if (!response.ok) {
@@ -653,7 +742,6 @@
                 return stockMap;
             } catch (error) {
                 console.error('Error obteniendo stock:', error);
-                // Fallback: permitir operación
                 const stockMap = {};
                 productosIds.forEach(id => {
                     stockMap[id] = 999;
@@ -662,13 +750,12 @@
             }
         }
 
-        // Función para validar y actualizar cantidad desde input manual
+        // Validar y actualizar cantidad desde input manual
         async function validarYActualizarCantidad(inputElement) {
             const productoId = inputElement.dataset.productoId;
             const stockDisponible = parseInt(inputElement.dataset.stock);
             let nuevaCantidad = parseInt(inputElement.value);
             
-            // Validaciones
             if (isNaN(nuevaCantidad) || nuevaCantidad < 1) {
                 nuevaCantidad = 1;
             }
@@ -678,24 +765,15 @@
                 mostrarNotificacion(`Solo hay ${stockDisponible} unidades disponibles`, 'warning');
             }
             
-            // Actualizar el input con el valor corregido
             inputElement.value = nuevaCantidad;
-            
-            // Actualizar en el carrito
             await cambiarCantidadCarrito(productoId, nuevaCantidad, stockDisponible, true);
         }
 
-        // ✅ PASO 4: MEJORAR FUNCIÓN cambiarCantidadCarrito() - REEMPLAZAR LA EXISTENTE
+        // Cambiar cantidad en carrito
         async function cambiarCantidadCarrito(productoId, nuevaCantidad, stockDisponible, esCambioDirecto = false) {
             const item = carritoData.items.find(item => item.productoId === productoId);
             if (!item) return;
             
-            // Si no se especifica nueva cantidad, usar la cantidad actual del item
-            if (!esCambioDirecto) {
-                nuevaCantidad = nuevaCantidad;
-            }
-            
-            // Validaciones
             if (nuevaCantidad <= 0) {
                 eliminarDelCarrito(productoId);
                 return;
@@ -730,7 +808,6 @@
             } catch (error) {
                 console.error('Error actualizando cantidad:', error);
                 
-                // Fallback: actualizar localmente
                 item.cantidad = nuevaCantidad;
                 carritoData.total = calcularTotal(carritoData.items);
                 guardarCarritoLocal(carritoData);
@@ -738,120 +815,11 @@
             }
         }
 
-        // ✅ PASO 5: FUNCIÓN cargarCarrito() MEJORADA - REEMPLAZAR LA EXISTENTE
-        async function cargarCarrito() {
-            try {
-                // Primero intentar cargar desde la base de datos
-                const headers = {};
-                if (!currentUserState?.isLoggedIn) {
-                    headers['X-Session-Id'] = getSessionId();
-                }
-                
-                const response = await fetch('/api/carrito', { headers });
-                
-                if (response.ok) {
-                    const carritoServidor = await response.json();
-                    if (carritoServidor.items.length > 0) {
-                        carritoData = carritoServidor;
-                        guardarCarritoLocal(carritoData);
-                        
-                        // Validar stock después de cargar desde servidor
-                        await validarStockCarrito();
-                        return;
-                    }
-                }
-                
-                // Si no hay datos en el servidor, cargar desde localStorage
-                carritoData = cargarCarritoLocal();
-                
-                // Validar stock del localStorage
-                if (carritoData.items.length > 0) {
-                    await validarStockCarrito();
-                } else {
-                    await actualizarCarritoUI();
-                }
-                
-            } catch (error) {
-                console.error('Error cargando carrito:', error);
-                carritoData = cargarCarritoLocal();
-                await actualizarCarritoUI();
-            }
-        }
-
-        // ✅ NUEVA FUNCIÓN PARA VALIDAR STOCK DEL CARRITO AL CARGAR
-        async function validarStockCarrito() {
-            if (!carritoData || carritoData.items.length === 0) {
-                await actualizarCarritoUI();
-                return;
-            }
-            
-            try {
-                const productosIds = carritoData.items.map(item => item.productoId);
-                const stockMap = await obtenerStockProductos(productosIds);
-                
-                let huboCambios = false;
-                let productosEliminados = [];
-                let cantidadesAjustadas = [];
-                
-                // Revisar cada item del carrito
-                carritoData.items = carritoData.items.filter(item => {
-                    const stockDisponible = stockMap[item.productoId] || 0;
-                    
-                    // Si no hay stock, eliminar del carrito
-                    if (stockDisponible === 0) {
-                        productosEliminados.push(item.nombre);
-                        huboCambios = true;
-                        return false;
-                    }
-                    
-                    // Si la cantidad excede el stock, ajustar
-                    if (item.cantidad > stockDisponible) {
-                        cantidadesAjustadas.push({
-                            nombre: item.nombre,
-                            cantidadAnterior: item.cantidad,
-                            cantidadNueva: stockDisponible
-                        });
-                        item.cantidad = stockDisponible;
-                        huboCambios = true;
-                    }
-                    
-                    return true;
-                });
-                
-                if (huboCambios) {
-                    // Recalcular total
-                    carritoData.total = carritoData.items.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-                    
-                    // Guardar cambios
-                    guardarCarritoLocal(carritoData);
-                    
-                    // Mostrar notificaciones sobre los cambios
-                    if (productosEliminados.length > 0) {
-                        mostrarNotificacion(`❌ Productos eliminados del carrito (sin stock): ${productosEliminados.join(', ')}`, 'warning');
-                    }
-                    
-                    if (cantidadesAjustadas.length > 0) {
-                        const mensajes = cantidadesAjustadas.map(item => 
-                            `${item.nombre}: ${item.cantidadAnterior} → ${item.cantidadNueva}`
-                        );
-                        mostrarNotificacion(`⚠️ Cantidades ajustadas por stock limitado:\n${mensajes.join('\n')}`, 'warning');
-                    }
-                }
-                
-                await actualizarCarritoUI();
-                
-            } catch (error) {
-                console.error('Error validando stock del carrito:', error);
-                await actualizarCarritoUI();
-            }
-        }
-
-        // ✅ PASO 4: FUNCIÓN agregarAlCarrito() MEJORADA - REEMPLAZAR LA EXISTENTE
+        // Agregar producto al carrito
         async function agregarAlCarrito(productoId) {
             try {
                 console.log('🛒 Agregando al carrito:', productoId);
                 
-                // Obtener stock actual del producto antes de agregar
                 const stockActual = await obtenerStockProductos([productoId]);
                 const stockDisponible = stockActual[productoId] || 0;
                 
@@ -860,23 +828,10 @@
                     return;
                 }
                 
-                // Verificar si ya está en el carrito y validar límite
                 const itemExistente = carritoData.items.find(item => item.productoId === productoId);
                 if (itemExistente && itemExistente.cantidad >= stockDisponible) {
                     mostrarNotificacion(`⚠️ Ya tienes el máximo disponible (${stockDisponible}) de este producto`, 'warning');
                     return;
-                }
-                
-                const btnElement = event?.target?.closest('.btn-agregar');
-                if (btnElement) {
-                    const textoOriginal = btnElement.innerHTML;
-                    btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agregando...';
-                    btnElement.disabled = true;
-                    
-                    setTimeout(() => {
-                        btnElement.innerHTML = textoOriginal;
-                        btnElement.disabled = false;
-                    }, 2000);
                 }
                 
                 const headers = { 'Content-Type': 'application/json' };
@@ -907,38 +862,7 @@
                 
             } catch (error) {
                 console.error('Error agregando al carrito:', error);
-                
-                try {
-                    const productosResponse = await fetch('/api/productos');
-                    const productos = await productosResponse.json();
-                    const producto = productos.find(p => p._id === productoId);
-                    
-                    if (producto) {
-                        const carritoLocal = cargarCarritoLocal();
-                        const itemExistente = carritoLocal.items.find(item => item.productoId === productoId);
-                        
-                        if (itemExistente) {
-                            itemExistente.cantidad += 1;
-                        } else {
-                            carritoLocal.items.push({
-                                productoId: producto._id,
-                                nombre: producto.nombre,
-                                precio: producto.precio,
-                                cantidad: 1,
-                                imagen: producto.imagenes[0] || ''
-                            });
-                        }
-                        
-                        carritoLocal.total = calcularTotal(carritoLocal.items);
-                        carritoData = carritoLocal;
-                        guardarCarritoLocal(carritoData);
-                        await actualizarCarritoUI();
-                        
-                        mostrarNotificacion('Producto agregado al carrito (modo offline) 📦', 'success');
-                    }
-                } catch (fallbackError) {
-                    mostrarNotificacion('Error al agregar producto al carrito', 'error');
-                }
+                mostrarNotificacion('Error al agregar producto al carrito', 'error');
             }
         }
 
@@ -994,35 +918,37 @@
             }
         }
 
-        // Cargar carrito al inicializar
-        async function sincronizarCarrito() {
-            if (!currentUserState?.isLoggedIn) return;
-            
+        // Cargar carrito
+        async function cargarCarrito() {
             try {
-                const carritoLocal = cargarCarritoLocal();
-                if (carritoLocal.items.length === 0) return;
+                const headers = {};
+                if (!currentUserState?.isLoggedIn) {
+                    headers['X-Session-Id'] = getSessionId();
+                }
                 
-                const response = await fetch('/api/carrito/sincronizar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ items: carritoLocal.items })
-                });
+                const response = await fetch('/api/carrito', { headers });
                 
                 if (response.ok) {
-                    const resultado = await response.json();
-                    carritoData = resultado.carrito;
-                    guardarCarritoLocal(carritoData);
-                    await actualizarCarritoUI();
-                    console.log('✅ Carrito sincronizado con servidor');
+                    const carritoServidor = await response.json();
+                    if (carritoServidor.items.length > 0) {
+                        carritoData = carritoServidor;
+                        guardarCarritoLocal(carritoData);
+                        await actualizarCarritoUI();
+                        return;
+                    }
                 }
+                
+                carritoData = cargarCarritoLocal();
+                await actualizarCarritoUI();
+                
             } catch (error) {
-                console.error('Error sincronizando carrito:', error);
+                console.error('Error cargando carrito:', error);
+                carritoData = cargarCarritoLocal();
+                await actualizarCarritoUI();
             }
         }
 
-        // ✅ FUNCIÓN PRINCIPAL: procesarCompra() - COMPLETA
+        // Procesar compra
         async function procesarCompra() {
             if (carritoData.items.length === 0) {
                 mostrarNotificacion('El carrito está vacío', 'warning');
@@ -1032,7 +958,7 @@
             mostrarModalEntrega();
         }
 
-        // Función para mostrar modal de datos de entrega
+        // Mostrar modal de entrega - SIN ONCLICK
         function mostrarModalEntrega() {
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
@@ -1040,7 +966,7 @@
                 <div class="modal-checkout">
                     <div class="modal-header">
                         <h3>🚚 Datos de Entrega</h3>
-                        <button class="btn-cerrar" onclick="this.closest('.modal-overlay').remove()">&times;</button>
+                        <button class="btn-cerrar" data-action="cerrar-modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <form id="formEntrega">
@@ -1106,12 +1032,10 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn-secundario" 
-                                onclick="this.closest('.modal-overlay').remove()">
+                        <button type="button" class="btn-secundario" data-action="cerrar-modal">
                             Cancelar
                         </button>
-                        <button type="button" class="btn-primario" 
-                                onclick="confirmarPedido()" id="btnConfirmarPedido">
+                        <button type="button" class="btn-primario" data-action="confirmar-pedido" id="btnConfirmarPedido">
                             Confirmar Pedido 🛍️
                         </button>
                     </div>
@@ -1120,12 +1044,26 @@
             
             document.body.appendChild(modal);
             
+            // ✅ Agregar event listeners al modal
+            modal.addEventListener('click', function(e) {
+                const action = e.target.dataset.action;
+                
+                switch (action) {
+                    case 'cerrar-modal':
+                        modal.remove();
+                        break;
+                    case 'confirmar-pedido':
+                        confirmarPedido();
+                        break;
+                }
+            });
+            
             setTimeout(() => {
                 document.getElementById('nombreEntrega').focus();
             }, 100);
         }
 
-        // Función para confirmar el pedido
+        // Confirmar pedido
         async function confirmarPedido() {
             const form = document.getElementById('formEntrega');
             const btnConfirmar = document.getElementById('btnConfirmarPedido');
@@ -1198,7 +1136,7 @@
             }
         }
 
-        // Función para mostrar modal de éxito
+        // Mostrar modal de éxito - SIN ONCLICK
         function mostrarModalExito(pedido) {
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
@@ -1224,8 +1162,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn-primario" 
-                                onclick="this.closest('.modal-overlay').remove(); location.reload();">
+                        <button type="button" class="btn-primario" data-action="continuar-comprando">
                             Continuar Comprando 🛍️
                         </button>
                     </div>
@@ -1233,9 +1170,17 @@
             `;
             
             document.body.appendChild(modal);
+            
+            // ✅ Event listener para modal de éxito
+            modal.addEventListener('click', function(e) {
+                if (e.target.dataset.action === 'continuar-comprando') {
+                    modal.remove();
+                    location.reload();
+                }
+            });
         }
 
-        // Función para mostrar notificaciones
+        // Mostrar notificaciones
         function mostrarNotificacion(mensaje, tipo = 'info') {
             const notif = document.createElement('div');
             notif.className = `notificacion ${tipo}`;
@@ -1277,9 +1222,40 @@
             }, 4000);
         }
 
-        // Ejecutar cuando se carga la página
+        // ✅ EVENT LISTENERS PRINCIPALES
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Página cargada, inicializando...');
+            
+            // Event listeners para elementos estáticos
+            const cartBtn = document.getElementById('cartBtn');
+            const closeCarritoBtn = document.getElementById('closeCarritoBtn');
+            const ctaButton = document.getElementById('ctaButton');
+            const procesarCompraBtn = document.getElementById('procesarCompraBtn');
+            const overlay = document.getElementById('overlay');
+            
+            if (cartBtn) {
+                cartBtn.addEventListener('click', toggleCarrito);
+            }
+            
+            if (closeCarritoBtn) {
+                closeCarritoBtn.addEventListener('click', toggleCarrito);
+            }
+            
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function() {
+                    document.getElementById('productos').scrollIntoView();
+                });
+            }
+            
+            if (procesarCompraBtn) {
+                procesarCompraBtn.addEventListener('click', procesarCompra);
+            }
+            
+            if (overlay) {
+                overlay.addEventListener('click', toggleCarrito);
+            }
+            
+            // Inicializar componentes
             updateUserButtons();
             cargarProductos();
             cargarBannerDinamico();
@@ -1288,20 +1264,13 @@
             setInterval(updateUserButtons, 30000);
         });
 
-        // Sincronizar carrito cuando cambie el estado del usuario
-        const originalUpdateUserButtons = updateUserButtons;
-        updateUserButtons = async function() {
-            const estadoAnterior = currentUserState?.isLoggedIn;
-            await originalUpdateUserButtons();
-            const estadoActual = currentUserState?.isLoggedIn;
-            
-            if (!estadoAnterior && estadoActual) {
-                console.log('🔄 Usuario logueado, sincronizando carrito...');
-                await sincronizarCarrito();
-            }
-        };
+        // Funciones de debug
+        function checkUserState() {
+            console.log('🔍 Estado actual del usuario:', currentUserState);
+            return currentUserState;
+        }
 
-        // Exponer funciones de debug globalmente
+        // Exponer funciones globalmente
         window.checkUserState = checkUserState;
         window.updateUserButtons = updateUserButtons;
     </script>

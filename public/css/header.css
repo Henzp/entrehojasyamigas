@@ -185,12 +185,18 @@
     gap: 1rem;
 }
 
-.search-btn, .cart-btn {
+/* ✅ OCULTAR BOTÓN DE BÚSQUEDA */
+.search-btn {
+    display: none;
+}
+
+/* ✅ SOLO ESTILOS PARA EL CARRITO */
+.cart-btn {
     background: none;
     border: none;
     font-size: 1.2rem;
     cursor: pointer;
-    color: #333; /* ✅ NEGRO COMO ANTES */
+    color: #333; /* ✅ NEGRO */
     -webkit-transition: color 0.3s ease;
     -moz-transition: color 0.3s ease;
     -ms-transition: color 0.3s ease;
@@ -209,32 +215,28 @@
     -webkit-justify-content: center;
     -ms-flex-pack: center;
     justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
 }
 
-.search-btn:hover, .cart-btn:hover {
+.cart-btn:hover {
     color: #2d5016; /* ✅ VERDE SOLO EN HOVER */
 }
 
-/* ✅ ESPECÍFICO PARA EL ÍCONO DEL CARRITO */
+/* ✅ ÍCONO DEL CARRITO EN NEGRO */
 .cart-btn i {
     font-size: 1.2rem;
-    margin-right: 0.3rem;
-    color: #333; /* ✅ FORZAR NEGRO */
-}
-
-/* ✅ ESPECÍFICO PARA EL ÍCONO DE BÚSQUEDA */  
-.search-btn i {
-    font-size: 1.2rem;
-    color: #333; /* ✅ FORZAR NEGRO */
-}
-
-/* ✅ ASEGURAR QUE FONT AWESOME SE VEA EN NEGRO */
-.cart-btn .fas, .search-btn .fas {
-    display: inline-block;
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
+    color: #333 !important; /* ✅ FORZAR NEGRO */
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
     font-style: normal;
-    color: #333; /* ✅ NEGRO EXPLÍCITO */
+}
+
+/* ✅ ESPECÍFICO PARA TODOS LOS ÍCONOS DE CARRITO */
+.cart-btn .fas[class*="shopping"],
+.cart-btn .fas[class*="cart"],
+.cart-btn .fas[class*="bag"] {
+    color: #333 !important;
 }
 
 /* ✅ FALLBACK SI FONT AWESOME NO CARGA */
